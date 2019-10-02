@@ -1,0 +1,68 @@
+{% if jpreLoader %}
+{{ 'jpreloader.scss.css' | asset_url | stylesheet_tag }}
+{% endif %}
+
+<script src="https://use.fontawesome.com/4486ebba84.js" ></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
+<script src="https://cdn.linearicons.com/free/1.0.0/svgembedder.min.js"></script>
+{% if settings.font != blank %}
+{{settings.font}}
+{% endif %}
+
+{% if settings.font1 != blank %}
+{{settings.font1}}
+{% endif %}
+
+{% if settings.font2 != blank %}
+{{settings.font2}}
+{% endif %}
+
+<script src="{{'api.jquery.js' | shopify_asset_url}}" ></script>
+
+<!--[if (lte IE 9) ]>{{ 'match-media.min.js' | asset_url | script_tag }}<![endif]-->
+
+{% if template.directory == 'customers' %}
+<!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script><!--<![endif]-->
+<!--[if lte IE 9]><script src="{{ 'shopify_common.js' | shopify_asset_url }}"></script><![endif]-->
+{% endif %}
+
+<script src="{{'lib.min.js' | asset_url}}" ></script>
+
+{% if settings.header_sticky %}
+{{ 'headroom.css' | asset_url | stylesheet_tag }}
+{% endif %}
+
+{% if template contains 'index' and settings.enable_slideshow %}
+{{ 'grt-slideshow.scss.css' | asset_url | stylesheet_tag }}
+{% endif %}
+
+{{ 'libs.min.css' | asset_url | stylesheet_tag }}
+{{ 'swiper.min.css' | asset_url | stylesheet_tag }}
+{{ 'grid.scss.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+{{ 'main.scss.css' | asset_url | stylesheet_tag }}
+{{ 'sections.scss.css' | asset_url | stylesheet_tag }}
+
+{% if jpreLoader %}
+<script src="{{'jpreloader.min.js' | asset_url}}" ></script>
+{% endif %}
+
+{% if template contains 'collection' %}
+<script src="{{'history.js' | asset_url}}" ></script>
+<script src="{{'collection.js' | asset_url}}" ></script>
+{% endif %}
+
+{% if settings.header_sticky %}
+<script src="{{'headroom.min.js' | asset_url}}" ></script>
+{% endif %}
+
+{% if template contains 'product' %}
+<script src="{{'cloudzoom.min.js' | asset_url}}" ></script>
+{% endif %}
+<script>
+  {%include 'lazysize.js' %}
+</script>
+<script src="{{'swiper.min.js' | asset_url}}" ></script>
+<script src="{{'froogaloop2.min.js' | asset_url}}" ></script>
+<script src="{{'theme.js' | asset_url}}" ></script>
+<script src="{{'gred.js' | asset_url}}" ></script>

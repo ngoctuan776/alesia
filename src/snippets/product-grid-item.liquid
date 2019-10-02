@@ -1,0 +1,214 @@
+{% unless image_size %}
+{%- assign image_size = 'grande' -%}
+{% endunless %}
+
+{% assign enable-quickview = settings.product_quickview %}
+{% assign enable-wishlist = settings.product_wishlist %}
+
+{% unless current_collection == blank %}
+{% assign current_collection = collection %}
+{% endunless %}
+
+{% unless enable_vendor == blank %}
+{% assign enable_vendor = true %}
+{% endunless %}
+
+{% assign on_sale = false %}
+{% assign sale_text = 'products.product.sale' | t %}
+{% if product.compare_at_price > product.price %}
+{% assign on_sale = true %}
+{% endif %}
+
+{% assign short_des = false %}
+{% if settings.product_shortdes and product.description contains '[short-description]' %}    
+{% assign short_des = true %}
+{% assign short_des_first = product.description | split:'[/short-description]' | first %}
+{% assign short_des_content = short_des_first | split:'[short-description]' | last %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% assign sold_out_text = 'products.product.sold_out' | t %}
+{% assign sTT = 'products.product.outOfStock' | t %}
+{% if product.available %}
+{% assign sold_out = false %}
+{% assign sTT = 'products.product.inStock' | t %}
+{% endif %}
+
+{% assign label_new = false %}
+
+{% for tag in product.tags %}
+{% assign tag_handle = tag | handle %}
+{% if tag_handle == 'new' %}
+{% assign label_new = true %}
+{% endif %}
+{% endfor %}
+
+<div class="product-item product-grid-item {{ settings.product_item_layout }}{% if sold_out %} sold-out{% endif %}{% if on_sale %} on-sale{% endif %}" data-id="product-{{ product.id }}">
+  <div class="product-item-info" data-available="{{ product.available }}">
+
+    <div class="product-image">
+      <a href="{{ product.url | within: collection }}" class="product-item-photo shadow-{{ settings.product_img_shadow }}">
+        <img class="as lazyload {{lazyload}}" src="{{ product.featured_image.src | img_url: image_size }}" data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-sizes="auto"  data-src="{{ product.featured_image.src | img_url: image_size }}" alt="{{ product.featured_image.alt | escape }}">
+
+        {% if settings.product_second_img %}
+        {% for image in product.images %}     
+        {% if forloop.index == 2 %}
+        <span class="second-img">
+          <img src="{{ image.src | product_img_url: image_size }}" alt="{{ product.featured_image.alt | escape }}">   
+        </span>
+        {% break %}
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+
+        {% unless sold_out %}
+        {% if settings.sale %}
+        {% if on_sale %}
+
+        {% if settings.sale_style == 'percent' %}
+        {% capture percent %}
+        {% if product.compare_at_price_max > product.price %}
+        -{{ product.compare_at_price_min | minus: product.price | times: 100.0 | divided_by: product.compare_at_price_min | money_without_currency | times: 100 | replace: '.0', ''}}%
+        {% endif %}
+        {% endcapture %}
+        {% endif %}
+        <span class="d-none d-sm-block p-label p-label-sale s-{{ settings.sale_s }}" style="background-color: {{ settings.sale_bg }}; color: {{ settings.sale_text }}; width: {{ settings.sale_width }}px; height: {{ settings.sale_height }}px; line-height: {{ settings.sale_height }}px; top:{{ settings.sale_p_top }}px; right: {{ settings.sale_p_right }}px;">{% if settings.sale_style == 'text' %}{{ 'products.product.sale' | t }}{% else %}{{ percent }}{% endif %}</span>
+        {% endif %}
+        {% endif %}
+        {% endunless %}
+
+        {% if settings.soldout %}
+        {% if sold_out %}
+        <span class="d-none d-sm-block p-label p-label-sold-out s-{{ settings.soldout_s }}" style="background-color: {{ settings.soldout_bg }}; color: {{ settings.soldout_text }}; width: {{ settings.soldout_width }}px; height: {{ settings.soldout_height }}px; line-height: {{ settings.soldout_height }}px; top:{{ settings.soldout_p_top }}px; right: {{ settings.soldout_p_right }}px;">
+          <span style="line-height: 1em;">{{ 'products.product.sold_out' | t }}</span>
+        </span>
+        {% endif %}
+        {% endif %}
+        
+        {% if label_new %}
+        {% if settings.new %}
+        <span class="d-none d-sm-block p-label p-label-new s-new s-{{ settings.new_s }}" style="background-color: {{ settings.new_bg }}; color: {{ settings.new_text }}; width: {{ settings.new_width }}px; height: {{ settings.new_height }}px; line-height: {{ settings.new_height }}px; top:{{ settings.new_p_top }}px; left: {{ settings.new_p_right }}px;">
+          {{ 'products.product.new' | t }}
+        </span>
+        {% endif %}
+        {% endif %}
+      </a>
+      <div class="product-action text-center d-none d-sm-none d-md-block">
+        <div class="wrap-action">
+          {% if enable-wishlist %}
+          {% include 'product-wishlist' %}
+          {% endif %}
+          {% if enable-quickview %}
+          <div class="action-item d-none d-sm-none d-md-block action-link action-icon">
+            <a class=" btn-quickview" href="javascript:void(0)" id="{{ product.handle }}" title="">
+              {% include 'icon-eye' %}          
+            </a>
+          </div>
+          
+           
+          {% endif %}
+
+        </div>
+      </div>
+      <div class="product-variant">
+        {% if settings.show_product_size%}
+        	{% include 'product-size' %}
+        {% endif %}
+        
+        {% if settings.show_product_color %}
+        	{% include 'product-swatch' %}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="product-item-details">
+
+      <a href="{{ product.url | within: collection }}" title="{{ product.title }}" class="product-item-name">{{ product.title }}</a>
+      {% if enable_vendor %}
+      <div class="vendor">{{ product.vendor | link_to_vendor }}</div>
+      {% endif %}
+
+      <div class="product-meta clearfix">        
+
+        {% if settings.use_review %}
+        <div class="custom-reviews hide-caption a-center hidden-xs">          
+          <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>          
+        </div>
+        {% endif %}
+
+        <div class="price-box pull-left">
+          {% capture price %}{{ product.price | money }}{% endcapture %}
+          {{ price }}
+          {% if on_sale %}
+          <s class="sale-price">{{ product.compare_at_price | money }}</s>
+          {% endif %}
+        </div>
+        
+         {% if product.description != blank %}
+        {% assign content = product.description %} 
+        {% if content contains "[shortcode]" %}           
+        {% assign str = content | split: "[/shortcode]" | first %}                    
+        {% assign str = str | split: "[shortcode]" | last %}
+        {% assign str = "[shortcode]" | append: str | append: "[/shortcode]" %}        
+        {% assign content = content | remove: str %}
+        {% endif %}  
+        {% if settings.use_decription %}
+        <div class="custom-decription">
+          {{ content | strip_html | truncatewords: 39}}
+        </div>
+        {% endif %}
+        {% endif %}
+        
+         
+        
+         {% if sold_out %}
+          <div class="action-item hidden">
+            <div class="action-link add-to-cart action">    
+              {{ 'products.product.sold_out' | t }} 
+            </div>
+          </div>
+
+          {% elsif product.variants.size > 1 %}
+          {% if settings.product_addtocart %}
+          <div class="action-item">
+            <div class="action-link add-to-cart action">               
+              {% if settings.product_item_layout == 'product_v1' %}
+              <a href="{{ product.url | within: collection }}" title=""><i class="fa fa-shopping-cart"></i></a>
+              {% else %}
+              <a href="{{ product.url | within: collection }}" title="">{{ 'products.product.select_options' | t }}</a>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %} 
+
+          {% else %}
+          {% if settings.product_addtocart %}
+          <div class="action-item">
+            <div class="action-link add-to-cart action {% if sold_out %}sold-out{% endif %}">    
+              <form action="/cart/add" method="post" class="variants" id="AddToCartForm-{{ product.id }}" enctype="multipart/form-data">   
+                <input type="hidden" name="id" value="{{ product.variants[0].id }}" />     
+                {% if settings.product_item_layout == 'product_v1' %}
+                <a class="btn-addToCart" href="{{ product.url | within: collection }}" title="{{ 'products.product.add_to_cart' | t }}"><i class="fa fa-shopping-cart"></i></a>
+                {% else %}
+                <a class="btn-addToCart" href="{{ product.url | within: collection }}" title="{{ 'products.product.add_to_cart' | t }}">{{ 'products.product.add_to_cart' | t }}</a>
+                {% endif %}
+              </form>  
+            </div>
+          </div>
+          {% endif %} 
+          {% endif %}
+
+      </div>
+    </div>
+
+    {% if short_des %}
+    <div class="hidden product-sdes des product-description rte">
+      {{ short_des_content }}
+    </div>
+    {% endif %}
+
+    <span class="product-ID hidden">{{ product.id }}</span>
+    <span class="product-URL hidden">{{ product.url }}</span>
+    <span class="product-STT hidden">{{ sTT }}</span>
+  </div>
+</div>

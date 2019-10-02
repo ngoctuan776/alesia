@@ -1,0 +1,256 @@
+<div data-section-id="{{ section.id }}" data-section-type="header-section">
+  {% include 'header-style' %}
+ 
+</div>
+
+<div class="mob-content d-block d-lg-none">
+  <div class="inner">
+    <span class="mob-close">{% include 'icon-close' %}</span> 
+    <div class="search-box">
+      {% include 'mini-search-form' with "mobile" %}
+    </div>
+    {% include 'site-nav' with "mobile" %} 
+    {% include 'social_icons' %}
+  </div>
+</div>
+<div class="mob-screen d-block d-lg-none">&nbsp;</div>
+
+{% schema %}
+{
+"name": "Header",
+"settings": [
+{
+"type": "header",
+"content": "Promotion"
+},
+{
+"type": "checkbox",
+"id": "pr",
+"label": "Enable Promotion",
+"default": false
+},
+{
+"type": "textarea",
+"id": "pr_text",
+"label": "Promotion Info"
+},
+{
+"type": "color",
+"id": "pr_bgColor",
+"label": "Promotion background color",
+"default": "#252525"
+},
+{
+"type": "color",
+"id": "pr_textColor",
+"label": "Promotion text color",
+"default": "#fff"
+},
+{
+"type": "text",
+"id": "pr_height",
+"label": "Promotion Height",
+"default": "46px"
+},
+{
+"type": "header",
+"content": "Topbar"
+},
+{
+"type": "checkbox",
+"id": "topbar",
+"label": "Enable Topbar",
+"default": true
+},
+{
+"type": "color",
+"id": "topbar_bgColor",
+"label": "Topbar background color",
+"default": "#fff"
+},
+{
+"type": "color",
+"id": "topbar_textColor",
+"label": "Topbar text color",
+"default": "#747474"
+},
+{
+"type": "color",
+"id": "topbar_linkColor",
+"label": "Topbar link color",
+"default": "#747474"
+},
+{
+"type": "checkbox",
+"id": "topbar_border",
+"label": "Show bottom border",
+"default": true
+},
+{
+"type": "color",
+"id": "topbar_borderColor",
+"label": "Topbar border color",
+"default": "#ddd"
+},
+{
+"type": "text",
+"id": "topbar_height",
+"label": "Height",
+"default": "46px"
+},
+{
+"type": "textarea",
+"id": "topbar_mess1",
+"label": "Message 1",
+"default": "<i class='fa fa-envelope'></i> Email : info@liberty.co.uk"
+},
+{
+"type": "textarea",
+"id": "topbar_mess2",
+"label": "Message 2",
+"default": "<i class='fa fa-phone'></i> Phone : (+84) 4567 421 978"
+},
+{
+"type": "checkbox",
+"id": "topbar_currency",
+"label": "Enable Currency",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "topbar_myaccount",
+"label": "Enable My Account",
+"default": true
+},
+{
+"type": "header",
+"content": "Header"
+},
+
+{
+"type": "color",
+"id": "header_bgColor",
+"label": "Header background color",
+"default": "#fff"
+},
+{
+"type": "color",
+"id": "header_logoColor",
+"label": "Header logo color",
+"default": "#222"
+},
+{
+"type": "color",
+"id": "header_textColor",
+"label": "Header text color",
+"default": "#a4aeb0"
+},
+{
+"type": "color",
+"id": "header_linkColor",
+"label": "Header link color",
+"default": "#a4aeb0"
+},
+
+{
+"type": "color",
+"id": "header_iconColor",
+"label": "Header icon color",
+"default": "#a4aeb0"
+},
+{
+"type": "text",
+"id": "logo_text",
+"label": "Logo text",
+"default": "simolux"
+},
+{
+"type": "text",
+"id": "logo_text_size",
+"label": "Logo text - font size",
+"default": "40px"
+},
+{
+"type": "text",
+"id": "logo_text_size_sm",
+"label": "Logo text - font size on Tablet",
+"default": "32px"
+},
+{
+"type": "text",
+"id": "logo_text_size_xs",
+"label": "Logo text - font size on Phone",
+"default": "22px"
+},
+
+{
+"type": "checkbox",
+"id": "logo_img",
+"label": "Use logo image",
+"default": false
+},
+{
+"type": "image_picker",
+"id": "logo",
+"label": "Logo image"
+},	
+{
+"type": "text",
+"id": "logo_max_width",
+"label": "Custom logo width (in pixels)",
+"default": "159"
+},
+{
+"type": "link_list",
+"id": "main_linklist",
+"label": "Menu",
+"default": "main-menu"
+},
+{
+"type": "textarea",
+"id": "head_customstyle",
+"label": "Custom style for #header"
+},
+{
+"type": "header",
+"content": "OffCanvas Menu"
+},
+{
+"type": "color",
+"id": "ofm_ibg",
+"label": "Background Color",
+"default": "#ebe2dd"
+},
+{
+"type": "color",
+"id": "ofm_color",
+"label": "Color",
+"default": "#29292a"
+},
+{
+"type": "header",
+"content": "OffCanvas Menu - Sub menu"
+},
+{
+"type": "color",
+"id": "ofms_ibg",
+"label": "Background Color",
+"default": "#eee"
+},
+{
+"type": "color",
+"id": "ofms_tcolor",
+"label": "Title Color",
+"default": "#000"
+},
+{
+"type": "color",
+"id": "ofms_color",
+"label": "Link Color",
+"default": "#222"
+}
+
+]
+}
+{% endschema %}
+

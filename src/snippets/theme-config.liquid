@@ -1,0 +1,53 @@
+{% assign product_review = settings.use_review %}
+
+{% assign jpreLoader = settings.jpreLoader %}
+{% assign swatch = settings.swatch_color %}
+{% assign enable-popupNewLetter = settings.popupNewLetter %}
+{% assign enable-vendor = true %}
+{% assign cart-animation = 'default' %}{% comment %}hover | click | offcanvas{% endcomment %} 
+{% assign cart-position = 'hover' %}
+{% assign theme-load = 'popup' %}{% comment %}popup | icon{% endcomment %} 
+{% assign addcart-susscess = 'popup' %}{% comment %}popup | text | noitice{% endcomment %} 
+
+{% assign miniCart-title = false %}
+{% assign miniCart-totalPrice = false %}
+
+{% assign collection_show_title = false %}
+{% assign collection_show_des = false %}
+{% assign ajaxCart = settings.product_ajaxCart %}
+
+{% assign direction = "horizontal" %}
+{% if settings.pt_position contains "left" or settings.pt_position contains "right" %}
+{% assign direction = "vertical" %}
+{% endif %}
+
+<script>
+  window.file_url = "{{''|file_url}}"; 
+  window.asset_url = "{{'xxxxx'|asset_url}}";
+
+  window.money_format = '{{ shop.money_with_currency_format }}';
+  window.shop_currency = '{{ shop.currency }}';
+  window.show_multiple_currencies = true;
+
+  window.ajaxCart = '{{ ajaxCart }}';
+  window.addcart_susscess = "popup";
+  window.review = {{product_review}};
+
+  window.filter_mul_choice = true;
+
+  //Product Detail - Add to cart
+  window.btn_addToCart = '#btnAddtocart';
+  window.product_detail_form = '#AddToCartForm';
+  window.product_detail_name = '.product-info h1';
+  window.product_detail_mainImg = '#single-photos';
+  window.addcart_susscess = "{{ addcart-susscess}}";
+
+  window.cart_count = ".mini-cart .cart-count"; 
+  window.cart_total = ".mini-cart .cart-total";
+
+  //Quickview
+  window.color_swatch = '{{ swatch }}';
+  window.product_media_layout = '{{ direction }}';
+  window.btn_quickview = ".btn-quickview";
+  window.quantity = ' x ';
+</script>

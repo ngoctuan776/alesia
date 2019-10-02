@@ -1,0 +1,20 @@
+{% unless g_title %}
+{% assign g_title = 'Top new' %}
+{% endunless %}
+{% unless g_limit %}
+{% assign g_limit = 5 %}
+{% endunless %}
+{% unless g_collection %}
+{% assign g_collection = collection %}
+{% endunless %}
+<div class="block block-mini-products-list">
+  <div class="block-title">
+    <h3>{{g_title}}</h3>
+  </div>
+  <div class="block-content mini-products-list">  
+    {% for product in collections[g_collection].products limit: g_limit %}  
+      {% include 'products-mini-item' %}  
+    {% endfor %}
+  </div>
+</div>
+ 

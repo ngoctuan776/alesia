@@ -1,0 +1,123 @@
+{% assign item = section.settings.brc_item %}
+{% assign title = section.settings.prt_title %}
+{% assign subtitle = section.settings.prt_subtitle %}
+
+<div class="widget widget-brandCarousel">
+  <div class="{% if section.settings.fw %}fw{% else %}container{% endif %}">
+    <div class="widget-inner">
+
+      {% if title != "" or subtitle != "" %}
+      <div class="widget-title text-center">      
+        {% if title != "" %}
+        <h3>{{ title }}</h3>
+        {% endif %}
+        {% if subtitle != "" %}
+        <p>{{ subtitle }}</p>
+        {% endif %}       
+      </div>
+      {% endif %}
+
+      <div class="widget-content">       
+
+        <div class="swiper-container" data-items="{{ item }}" data-margin="30" data-row="{{ citem }}" data-md="4" data-sm="3" data-xs="2">
+          <div class="swiper-wrapper">  
+            {% for block in section.blocks %} 
+            <div class="swiper-slide">     
+              <a class="brand-item" href="{{ block.settings.brc_url }}" title="">
+                {% if block.settings.brc_image != blank %}
+                {{ block.settings.brc_image | img_url: '200x200' | img_tag: block.settings.brc_image.alt, 'banner5__image' }}
+                {% else %}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+              </a>       
+            </div>
+            {% endfor %}
+          </div>    
+          <div class="swiper-button-next d-none d-lg-block"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
+          <div class="swiper-button-prev d-none d-lg-block"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>
+          <div class="swiper-pagination d-block d-lg-none"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% schema %}
+{
+"name": "GRT - Brand carousel",
+"class": "section-brand-c",
+"settings": [
+{
+"type": "checkbox",
+"id": "fw",
+"label": "Full width"
+},
+{
+"type": "checkbox",
+"id": "s1",
+"label": "Show on Desktop",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "s2",
+"label": "Show on Tablet",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "s3",
+"label": "Show on Mobile",
+"default": true
+},
+{
+"type": "text",
+"id": "brc_item",
+"label": "Item \/ Row",
+"default": "6"
+},
+{
+"type": "header",
+"content": "Title"
+},
+{
+"type": "text",
+"id": "prt_title",
+"label": "Title"
+},
+{
+"type": "text",
+"id": "prt_subtitle",
+"label": "Sub Title"
+}
+],
+"blocks": [
+{
+"type": "image",
+"name": "brand item",
+"settings": [
+{
+"type": "image_picker",
+"id": "brc_image",
+"label": "Icon"
+},
+{
+"type": "text",
+"id": "brc_url",
+"label": "Url",
+"default": "collections\/all"
+}
+]
+}
+],
+"presets": [
+{
+"name": "GRT - Brand carousel",
+"category": "Image"
+}
+]
+}
+{% endschema %}
+

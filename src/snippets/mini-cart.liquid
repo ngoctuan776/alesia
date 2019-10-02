@@ -1,0 +1,72 @@
+{% if template contains 'cart' %}
+<div class="miniCart miniCart-default disable">
+  <a class="tongle" title="" href="javascript:void(0)">   
+    <i class="icon-shopping-cart1 d-lg-none"></i>  Cart
+    <span class="cart-count"><span>(</span><span>{{ cart.item_count }}</span><span>)</span></span>
+  </a>
+</div>
+{% else %}
+{% if mini-cart == 'default' %}
+<div class="miniCart mini-cart miniCart-default grt-dropdown dxm_grt">
+  <a class="tongle" title="" href="javascript:void(0)">  
+    <i class="icon-shopping-cart1 d-lg-none"></i>
+    <span class="d-lg-block d-none">
+    Cart
+      <span class="cart-count"><span>(</span><span>{{ cart.item_count }}</span><span>)</span></span></span>
+  </a>
+  <div class="grt-dropdown--content">
+    <div class="miniCart-content {% if cart.item_count < 1 %}empty{% endif %}">
+      <div class="noitice">
+        {{ 'cart.general.there_are' | t }} <span class="count">{{ cart.item_count }}</span> <span>{{ 'cart.general.cart_with_count' | t: count: cart.item_count }}</span> {{ 'cart.general.in_your_cart' | t }}
+      </div>
+
+      <ul class="miniCart-list">
+        {% for item in cart.items %}
+        <li class="item clearfix" id="cart-item-{{item.id}}">
+          <a href="{{item.url}}" class="product-image">
+            <img src="{{ item.image | product_img_url: '75x' }}" alt="{{item.title}}">
+          </a>
+          <div class="product-details">  
+            <a class="product-name" href="{{item.url}}">
+              {{ item.product.title }}
+            </a> 
+
+            {% unless item.variant.title contains 'Default' %}
+            <div class="product-meta">
+              <span>{{ item.variant.title }}</span>             
+            </div>
+            {% endunless %}
+
+            {{item.price | money}}
+            <span class="qty"> x <span>{{item.quantity}}</span></span>
+            <a href="javascript:void(0)" title="remove" class="btn-remove"><i class="fa fa-trash-o"></i></a>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+
+      <div class="summary">                
+
+        <p class="total">
+          <span class="label">{{ 'cart.label.total' | t }}</span>
+        </p>
+
+        <span class="price cart-total">
+          {{cart.total_price | money}}
+        </span>     
+      </div>
+
+      <div class="actions">
+        <a class="btn btn-sm btn-primary btn-cart" href="/cart">{{'cart.general.goto_cart' | t }}</a>
+        <a class="btn btn-checkout btn-sm btn-second" href="/checkout">{{ 'cart.general.checkout' | t }}</a>          
+      </div>
+
+    </div>
+
+  </div>
+</div>
+{% else %}
+
+
+{% endif %}
+{% endif %}

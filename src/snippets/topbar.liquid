@@ -1,0 +1,55 @@
+<div class="topbar {% unless settings.topbar %}hidden-lg hidden-md{% endunless %}">
+  <div class="container">
+    <div class="inner">
+      <div class="row">
+        <div class="col-md-8 col-sm-8 col-2">
+          
+          <div class="mob-menu pull-left d-block d-lg-none">      
+            <a class="mob-btn" title="" href="#">{% include 'icon-menu' %}</a>   
+          </div>
+          
+          {% if settings.topbar_mess1 != '' or settings.topbar_mess2 != '' %}
+          <ul class="message-box d-none d-sm-block no-margin no-padding">
+            {% if settings.topbar_mess1 != '' %}
+            <li class="d-inline-block">            
+              {{ settings.topbar_mess1 }}            
+            </li>
+            {% endif %}
+
+            {% if settings.topbar_mess2 != '' %}
+            <li class="d-inline-block">            
+              {{ settings.topbar_mess2 }}            
+            </li>
+            {% endif %}
+
+          </ul>
+          {% endif %}
+        </div>
+
+        <div class="col-md-4 col-sm-4 col-10">
+          <div class="shop-moreTool pull-right">
+            {% include 'currency-picker' %} 
+            {% if shop.customer_accounts_enabled %}
+            {% if customer %} 
+            <div class="pull-left grt-dropdown">						
+              <a href="#" title="account"><i class="fa fa-user"></i> {{ 'customer.account.hi' | t}}{{ customer.first_name }}<i class="fa fa-angle-down"></i></a>
+              <div class="grt-dropdown--content">
+                {% include 'customer-minibox' %}       
+              </div>
+            </div>
+            {% else %}
+            <div class="pull-left grt-dropdown">						
+              <a href="#" title="account"><i class="fa fa-user"></i> {{ 'customer.account.title' | t}}<i class="fa fa-angle-down"></i></a>
+              <div class="grt-dropdown--content">
+                {% include 'customer-minibox' %}       
+              </div>
+            </div>
+
+            {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      </div>		
+    </div>
+  </div>
+</div>

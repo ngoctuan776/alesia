@@ -1,0 +1,42 @@
+{% if customer %} 
+<ul class="module-list">
+  <li>
+    <a href="/account">{{ 'layout.customer.account' | t }}</a>
+  </li>
+  
+  <li>
+    <a href="/checkout">{{ 'cart.general.checkout' | t }}</a>
+  </li>
+   <li>
+    <a href="/pages/wishlist">{{ 'cart.general.wishlist' | t }}</a>
+  </li>
+  <li>
+    <a href="/account/logout">{{ 'layout.customer.log_out' | t }}</a>
+  </li>
+</ul>
+{% else %}
+<div id="CustomerLoginForm" class="form-vertical size-sm">
+  {% form 'customer_login' %}
+
+  <label for="CustomerEmail">{{ 'customer.login.email' | t }}</label>
+  <input required  placeholder="" type="email" name="customer[email]" id="CustomerEmail" class="{% if form.errors contains 'email' %} input--error{% endif %}" autofocus>
+
+  {% if form.password_needed %}
+  <label for="CustomerPassword">{{ 'customer.login.password' | t }}</label>
+  <input required placeholder="" type="password" value="" name="customer[password]" id="CustomerPassword" class="{% if form.errors contains 'password' %} input--error{% endif %}">
+  {% endif %}
+
+  <div class="text-center">
+    <input type="submit" class="btn btn-submit" value="{{ 'customer.login.sign_in' | t }}">
+    {% if form.password_needed %}
+    <p><a href="/account/login/#recover">{{ 'customer.login.forgot_password' | t }}</a></p>
+    {% endif %}
+
+    <p>
+      {{ 'layout.customer.create_account' | t | customer_register_link }}
+    </p>
+  </div>
+
+  {% endform %}
+</div>
+{% endif %}

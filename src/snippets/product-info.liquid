@@ -1,0 +1,96 @@
+{% assign title-align = section.settings.product_tab_title_align %}
+{% assign content-align = section.settings.product_tab_content_align %}
+
+{% if product-info == 'box' %}
+{% assign container = "" %}
+{% else %}
+{% assign container = "container" %}
+{% endif %}
+
+
+<div class="collateral des-info">
+  <div class="e-tabs tab-wrap">
+    {% unless product-info == "full" %}
+    <div class="{{ container }}"> 
+      {% endunless %}
+      <div class="inner text-{{title-align}}">
+        <ul class="tabs tabs-title">
+
+          {% if section.settings.tab_description %}
+          <li class="tab-link h4" data-tab="tab-1">{% if section.settings.tab_description_title != "" %}{{section.settings.tab_description_title}}{% else %}{{ 'products.general.tab_description_title' | t }}{% endif %}</li>
+          {% endif %}
+
+          {% if section.settings.tab_review %}
+          <li class="tab-link h4" data-tab="tab-2">{% if section.settings.tab_review_title != "" %}{{section.settings.tab_review_title}}{% else %}{{ 'products.general.tab_review_title' | t }}{% endif %}</li>
+          {% endif %}
+
+          {% if section.settings.tab_custom %}
+          <li class="tab-link h4" data-tab="tab-3">{{ section.settings.tab_custom_title }}</li> 
+          {% endif %}
+
+        </ul>
+      </div>
+      {% unless product-info == "full" %}
+    </div>
+    {% endunless %}
+
+    <div class="tabs-content text-{{content-align}}">
+
+      {% unless product-info == "full" %}
+      <div class="{{ container }}"> 
+        {% endunless %}       
+        {% if section.settings.tab_description %}
+        <div id="tab-1" class="tab-content">
+          {% assign content = product.description %} 
+          {% if content contains "[shortcode]" %}           
+          {% assign str = content | split: "[/shortcode]" | first %}                    
+          {% assign str = str | split: "[shortcode]" | last %}
+          {% assign str = "[shortcode]" | append: str | append: "[/shortcode]" %}        
+          {% assign content = content | remove: str %}
+          {% endif %}   
+          <div class="rte product-description">     
+            {{ content }}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if section.settings.tab_review %}
+        <div id="tab-2" class="tab-content">
+          <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+        </div>
+        {% endif %}
+
+        {% if section.settings.tab_custom %}
+        <div id="tab-3" class="tab-content"> 
+
+          {% if section.settings.product_customtab_img %}          
+          <div class="f-box">           
+            {% if section.settings.customtab_img != blank %}
+            {{ section.settings.customtab_img  | img_tag: section.settings.customtab_img.alt, 'customtab_img' }}
+            {% else %}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+
+          </div>
+          {% endif %}
+
+          {% if section.settings.product_customtab_html != "" %}          
+          <div class="f-box des">       
+            {{ section.settings.product_customtab_html }}
+          </div>
+          {% endif %}
+
+          {% if section.settings.product_customtab_custompage != "" %}      
+          <div class="f-box">    
+            {{ pages[section.settings.product_customtab_custompage].content }}      
+          </div>
+          {% endif %}
+
+        </div>
+        {% endif %}
+        {% unless product-info == "full" %}
+      </div>
+      {% endunless %}
+    </div>
+  </div>
+</div>

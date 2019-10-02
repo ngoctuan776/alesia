@@ -1,0 +1,279 @@
+{% if jpreLoader %}
+<script>
+  $(document).ready(function() {
+    $('body').jpreLoader({	        
+    });
+  });
+</script>
+{% endif %}
+
+{% if settings.header_sticky %}
+<script>
+  (function() {
+    var header = document.querySelector("#header");
+
+    if(window.location.hash) {
+      header.classList.add("headroom--unpinned");
+    }
+
+    var headroom = new Headroom(header, {
+      tolerance: {
+        down : 0,
+        up : 10
+      },
+      offset : 220
+    });
+    headroom.init();
+
+  }());
+</script>
+{% endif %}
+
+{% if settings.countdown %}
+<script src="{{'jquery.countdown.min.js' | asset_url}}" ></script>
+<script>
+
+  $('[data-countdown]').each(function() {
+    var $this = $(this), finalDate = $(this).data('countdown');
+    $this.countdown(finalDate, function(event) {
+      $this.html(event.strftime(''
+                                + '<ul>'
+                                + '<li><span>%D</span> {{ 'general.time.day' | t }}</li> '
+                                + '<li><span>%H</span> {{ 'general.time.hour' | t }}</li> '
+                                + '<li><span>%M</span> {{ 'general.time.min' | t }}</li> '
+                                + '<li><span>%S</span> {{ 'general.time.sec' | t }}</li>'
+                                + '</ul>'
+
+                               ));
+    });
+  });
+
+</script>
+{% endif %}
+
+<script src="{{'option_selection.js' | shopify_asset_url}}" ></script>
+{% if settings.swatch_color %}
+{{ 'swatch.scss.css' | asset_url | stylesheet_tag }}
+<script>
+  jQuery(function() {
+    jQuery('.swatch :radio').change(function() {
+      var optionIndex = jQuery(this).closest('.swatch').attr('data-option-index');
+      var optionValue = jQuery(this).val();
+      jQuery(this)
+      .closest('form')
+      .find('.single-option-selector')
+      .eq(optionIndex)
+      .val(optionValue)
+      .trigger('change');
+    });
+  });
+</script>
+{% else %}
+{% include 'linked-options' %}  
+{% endif %}
+
+{% if template contains 'collection' %}
+<script src="{{'ajaxify.min.js' | asset_url}}" ></script>
+<script>
+  jQuery(document).ready(function(){
+    gred.pagination();
+  });
+</script> 
+{% endif %}
+
+<script>
+  jQuery(document).ready(function(){
+    //MEGAMENU
+    var pTags = $(".load-megamenu .grt-megamenu-item");
+    if ( pTags.parent().is("div.shopify-section")) {
+      pTags.unwrap();
+    };
+
+    $(".grt-megamenu-item").each( function(){
+      var dataUse = $(this).attr('data-use');
+      $(dataUse).addClass('dropdown');
+      $('.mob-nav '+dataUse).addClass('toggle-menu');
+      $(dataUse).find('ul.sub-menu.level-1').remove();
+      $(dataUse + ' a').append('<span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span>');
+      $(this).appendTo(dataUse); 
+    });
+
+    $('.mob-nav .dropdown.toggle-menu .caret').on('click', function(e) {     
+      e.preventDefault(); 
+      $(this).parent().next().slideToggle("fast");
+      return false;       	
+    });
+
+    $('.grt-megamenu-item.hidden-mobile').parent().find('.caret').addClass('hidden-mobile');
+  })
+</script>
+
+
+{% if template contains 'index' and settings.enable_slideshow %}  
+<script src="{{'grt-slideshow-tool.min.js' | asset_url}}" ></script>
+<script src="{{'grt-slideshow.min.js' | asset_url}}" ></script> 
+<script>
+  jQuery(document).ready(function(){
+
+    var delay = $('.main-slider').attr('data-delay');
+    if (typeof delay !== typeof undefined && delay !== false) {    
+    } else{
+      delay = 8000;
+    }
+
+    var width = $('.main-slider').attr('data-width');
+    if (typeof width !== typeof undefined && width !== false) {    
+    } else{
+      width = 1920;
+    }
+
+    var height = $('.main-slider').attr('data-height');
+    if (typeof height !== typeof undefined && height !== false) {    
+    } else{
+      height = 775;
+    }
+
+    var pTags = $(".load-slideshow li");
+    if ( pTags.parent().is("ul")) {
+      pTags.unwrap();
+    }   
+    
+    if ( pTags.parent().is("div.shopify-section")) {
+      pTags.unwrap();
+    } 
+    
+    (function($){
+      jQuery.fn.checkEmpty = function() {
+        return !$.trim(this.html()).length;
+      };
+    }(jQuery));
+    
+    $('.load-slideshow .shopify-section').each( function(){      
+      if($(this).checkEmpty()){
+        $(this).remove();
+      }
+    });
+    
+    $(".load-slideshow > li").each( function(){
+    	$(this).appendTo($('#rev_slider > ul')); 
+    });
+
+    jQuery('#rev_slider').show().revolution({ 
+      dottedOverlay: 'none',
+      delay: delay,
+      startwidth: width, 
+      startheight: height, 
+
+      hideThumbs:200,
+      thumbWidth:100,                            
+      thumbHeight:50, 
+      thumbAmount:5,
+
+      navigationType:"both",                  
+      navigationArrows:"",        
+      navigationStyle: 'preview3',             
+      touchenabled:"on",                      
+      onHoverStop:"on",        
+
+      navOffsetHorizontal:0,
+      navOffsetVertical:50,
+
+      swipe_velocity: 0.7, 
+      swipe_min_touches: 1,
+      swipe_max_touches: 1,
+      drag_block_vertical: false,
+
+      spinner: 'spinner2',
+      keyboardNavigation: 'on',
+
+      navigationHAlign: 'center',
+      navigationVAlign: 'bottom',
+      navigationHOffset: 20,
+      navigationVOffset: 20,
+
+      soloArrowLeftHalign: '',
+      soloArrowLeftValign: '',
+      soloArrowLeftHOffset: 0,
+      soloArrowLeftVOffset: 0,
+
+      soloArrowRightHalign: '',
+      soloArrowRightValign: '',
+      soloArrowRightHOffset: 0,
+      soloArrowRightVOffset: 0,
+
+      shadow: 0,
+      fullWidth: 'on',
+      fullScreen: 'off', 
+
+      stopLoop: 'off',
+      stopAfterLoops: -1,
+      stopAtSlide: -1,
+
+      shuffle: 'off',
+      autoHeight: 'on',
+      forceFullWidth: 'off',
+      hideTimerBar: 'off',
+
+      hideNavDelayOnMobile: 1500,
+      hideThumbsOnMobile: 'off',
+      hideBulletsOnMobile: 'off',
+      hideArrowsOnMobile: 'off',
+      hideThumbsUnderResolution: 0,
+
+      hideSliderAtLimit: 0,
+      hideCaptionAtLimit: 0,
+      hideAllCaptionAtLilmit: 0,
+      startWithSlide: 0
+    });
+  })
+</script>
+
+{% endif %}
+<script>
+  window.out_of_stock="{{ 'products.product.outOfStock' | t  }}";
+  window.in_stock="{{ 'products.product.inStock' | t  }}";
+  
+</script>
+<script>
+  jQuery(document).ready(function($) {
+    var currentAjaxRequest = null;
+    var searchForms = $('form[action="/searchs"]').css('position','absolute').each(function() {
+      var input = $(this).find('input[name="q"]');
+      var offSet = input.position().top + input.innerHeight();
+      $('<ul class="box-results hidden"></ul>').css( { 'position': 'absolute', 'left': '0px', 'top': offSet } ).appendTo($(this)).hide();
+      input.attr('autocomplete', 'off').bind('keyup change', function() {
+        var term = $(this).val();
+        var form = $(this).closest('form');
+        var searchURL = '/search?type=product&q=' + term;
+        var resultsList = form.find('.box-results');
+        if (term.length >= 3 && term != $(this).attr('data-old-term')) {
+          $(this).attr('data-old-term', term);
+          if (currentAjaxRequest != null) currentAjaxRequest.abort();
+          currentAjaxRequest = $.getJSON(searchURL + '&view=json', function(data) {
+            resultsList.empty();
+            if(data.results_count == 0) {
+              resultsList.hide();
+            } else {
+              $.each(data.results, function(index, item) {
+                var link = $('<a></a>').attr('href', item.url);
+                link.append('<span class="thumbnail"><img src="' + item.thumbnail + '" /></span>');
+                link.append('<span class="title_name">' + item.title + '</span>');
+                link.wrap('<li></li>');
+                resultsList.append(link.parent());
+              });
+              if(data.results_count > 5) {
+                resultsList.append('<li class="a-center"><span class="btn btn-results"><a href="' + searchURL + '"> All Results (' + data.results_count + ')</a></span></li>');
+              }
+              resultsList.fadeIn(200);
+            }        
+          });
+        }
+      });
+    });
+    $('body').bind('click', function(){
+      $('.box-results').hide();
+    });
+  })
+</script>
+
+{% include 'currencies' %}

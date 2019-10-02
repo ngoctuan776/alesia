@@ -1,0 +1,123 @@
+{% include 'collection.shopby-category' %}
+
+
+{% if section.settings.bl_enable %}
+  {% if section.settings.bl_img_show %}
+  <div class="block block-latest">
+    <div class="block-title">
+      <h3>{{ section.settings.bl_title }}</h3> 
+    </div>
+
+    <div class="block-content">
+      <ul>
+        {% for article in blogs[blog.handle].articles limit:3 %}
+        <li class="post clearfix">
+           {% if article.image %}
+          <div class="media pull-left">
+              <a title="" href="{{ article.url }}">
+                <img alt="" src="{{ article.image.src | img_url: '80x' }}">
+              </a>
+          </div>
+          {% endif %}
+          <time pubdate datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+            {{ article.published_at | date: format: 'month_day_year' }}
+          </time>
+          <a href="{{ article.url }}">{{ article.title }}</a>   
+          
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% else %}
+  <div class="block block-recent">
+    <div class="block-title">
+      <h3>{{ section.settings.bl_title }}</h3> 
+    </div>
+
+    <div class="block-content">
+      <ul>
+        {% for article in blogs[blog.handle].articles limit:6 %}
+        <li>
+          <time pubdate datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+            {{ article.published_at | date: format: 'month_day_year' }}
+          </time>
+          <a href="{{ article.url }}">{{ article.title }}</a>     
+          
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+{% endif %}
+
+
+{% if section.settings.ins_enable %}
+<div class="block block-instagram">
+  {% assign title = section.settings.ins_title %}
+  {{ 'instafeed.min.js' | asset_url | script_tag }} 
+  {% assign instafeed_template = '<div class="item"><a target="_blank" href="{{link}}"><img src="{{image}}" /></a></div>' %}
+  {% if title != '' %}
+  <div class="block-title">
+    <h3>{{ title }}</h3>
+  </div>
+  {% endif %}
+  <div class="block-content">
+	<div id="instafeed" class="insta-wrapper clearfix">
+      
+    </div>
+  </div>
+  <script>
+      var feed = new Instafeed({
+        get: "{{ section.settings.ins_get }}",    
+        {% if section.settings.ins_instagram_tag != blank %} tagName: "{{ section.settings.ins_instagram_tag }}", {% endif %}
+        {% if section.settings.ins_locationId != blank %} locationId: "{{ section.settings.ins_instagram_locationId }}", {% endif %}
+        {% if section.settings.ins_user-id != blank %} userId: {{ section.settings.ins_user-id }}, {% endif %}
+        {% if section.settings.ins_accessToken != blank %}accessToken: '{{ section.settings.ins_accessToken }}', {% endif %}
+        resolution: "{{ section.settings.ins_resolution_images }}",
+        limit: "{{ section.settings.ins_limit }}",
+        template: '{{ instafeed_template }}'
+      });
+      feed.run(); 
+    </script>
+</div>
+{% endif %}
+
+
+{% if section.settings.tags_enable %}
+{% if blog.all_tags.size > 0 %}
+<div class="block block-tags">
+  <div class="block-title">
+    <h3>{{ section.settings.tags_title }}</h3> 
+  </div>
+  <div class="block-content">
+    <ul class="clearfix">
+      {% for tag in blog.all_tags %}
+      {% if current_tags contains tag %}
+      <li>{{ tag }}</li>
+      {% else %}
+      <li>{{ tag | link_to_tag: tag }}</li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% else %}
+<p>no tags</p>
+{% endif %}
+{% endif %}
+
+
+
+{% if section.settings.custom_banner %}
+<div class="block block-custom-banner">
+  <a href="{{section.settings.banner_link}}" title="">
+    {% if section.settings.siderbar_img != blank %}
+    {{ section.settings.siderbar_img | img_url: '270x' | img_tag: section.settings.siderbar_img.alt, '' }}
+    {% else %}
+    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+    {% endif %}
+  </a>
+</div>
+{% endif %}

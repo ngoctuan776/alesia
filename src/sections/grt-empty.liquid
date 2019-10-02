@@ -1,0 +1,40 @@
+<div class="empty-box d-none d-xl-block" style="height: {{ section.settings.height }}px;">&nbsp;</div>
+<div class="empty-box d-none d-xl-none d-md-block" style="height: {{ section.settings.sm_height }}px;">&nbsp;</div>
+<div class="empty-box d-md-none d-xl-none" style="height: {{ section.settings.xs_height }}px;">&nbsp;</div>
+{% schema %}
+  {
+    "name": "GRT - Empty box",
+    "settings": [
+      {
+        "type": "text",
+        "id": "height",
+        "label": "Height",
+        "default": "30"
+      },
+      {
+        "type": "text",
+        "id": "sm_height",
+        "label": "Height on Tablet",
+        "default": "30"
+      },
+      {
+        "type": "text",
+        "id": "xs_height",
+        "label": "Height on Phone",
+        "default": "30"
+      }
+	],
+    "presets": [
+      {
+        "name": "GRT - Empty box",
+        "category": "Device"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

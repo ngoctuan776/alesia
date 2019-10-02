@@ -1,0 +1,116 @@
+<div class="widget widget-promotion-2 {% if section.settings.s1 %}d-xl-block{% else %}d-xl-none{% endif %} {% if section.settings.s2 %}d-md-block{% else %}d-md-none{% endif %} {% if section.settings.s3 %}d-block{% else %}d-none{% endif %}">
+  <div class="{% if section.settings.fw %}fw{% else %}container{% endif %}">  
+    <div class="widget-inner">
+      <div class="row no-gutters text-center">
+        {% for block in section.blocks %}          
+        {% if block.settings.enable %}
+        <div class="col-sm col-12">
+          <div class="promotion-item">
+            {% if block.settings.item_image != blank %}
+            {% capture image_size %}{{ block.settings.img_width }}x{% endcapture %}
+            <img src="{{ block.settings.item_image | img_url: image_size }}"
+                 srcset="{{ block.settings.item_image | img_url: image_size }} 1x, {{ block.settings.item_image | img_url: image_size, scale: 2 }} 2x"
+                 alt="{{ block.settings.item_image.alt | default: shop.name }}">         
+
+            {% else %}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+
+            <a href="{{ block.settings.item_url }}" title="">
+              <span class="lbl1 d-block">{{ block.settings.title }}</span>
+            </a>
+            <span class="lbl2 d-block">{{ block.settings.subtitle }}</span>
+
+          </div>
+        </div>        
+        {% endif %}
+        {% endfor %}
+      </div>      
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+"name": "GRT - Promotion - 2",
+"settings": [
+{
+"type": "checkbox",
+"id": "fw",
+"label": "Full width"
+},
+{
+"type": "checkbox",
+"id": "s1",
+"label": "Show on Desktop",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "s2",
+"label": "Show on Tablet",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "s3",
+"label": "Show on Mobile",
+"default": true
+}
+],
+"blocks": [
+{
+"type": "image",
+"name": "Item",
+"settings": [
+{
+"type": "checkbox",
+"id": "enable",
+"label": "Enable item"
+},
+{
+"type": "text",
+"id": "title",
+"label": "Title",
+"default": "Title"
+},
+{
+"type": "text",
+"id": "subtitle",
+"label": "SubTitle",
+"default": "SubTitle"
+},		  
+{
+"type": "image_picker",
+"id": "item_image",
+"label": "Icon"
+},
+{
+"type": "text",
+"id": "img_width",
+"label": "Icon - Width",
+"default": "34"
+},
+{
+"type": "text",
+"id": "item_url",
+"label": "Url", 
+"default": "collections\/all"
+}
+]
+}
+],
+"presets": [
+{
+"name": "GRT - Promotion - 2",
+"category": "Text"
+}
+]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

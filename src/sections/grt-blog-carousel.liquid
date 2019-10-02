@@ -1,0 +1,328 @@
+{% assign limit = section.settings.prt_limit %}
+{% assign item = section.settings.prt_item %}
+{% assign citem = section.settings.prt_citem %}
+{% assign item980 = section.settings.prt_item_980 %}
+{% assign item768 = section.settings.prt_item_768 %}
+{% assign item480 = section.settings.prt_item_480 %}
+{% assign title = section.settings.prt_title %}
+{% assign subtitle = section.settings.prt_subtitle %}
+
+{% capture image_size %}{{ section.settings.prt_pImg_width }}x{% endcapture %} 
+{% assign row = section.settings.prt_citem %}
+
+<div class="widget-inner widget widget-blogCarousel {% if section.settings.s1 %}d-xl-block{% else %}d-xl-none{% endif %} {% if section.settings.s2 %}d-md-block{% else %}d-md-none{% endif %} {% if section.settings.s3 %}d-block{% else %}d-none{% endif %}">
+  <div class="{% if section.settings.fw %}fw{% else %}container{% endif %}"> 
+
+    {% if title != "" or subtitle != "" %}
+    <div class="widget-title text-center">  
+      {% if subtitle != "" %}
+      <p class="ct_font font-italic">{{ subtitle }}</p>
+      {% endif %} 
+      {% if title != "" %}
+      <h3>{{ title }}</h3>
+      {% endif %}
+            
+    </div>
+    {% endif %}
+
+    <div class="widget-content">      
+      <div class="swiper-container" data-items="{{ item }}" data-margin="{{ section.settings.prt_gutter }}" data-row="{{ citem }}" data-md="{{ item980 }}" data-sm="{{ item768 }}" data-xs="{{ item480 }}">
+        <div class="swiper-wrapper">  
+          {% for article in blogs[section.settings.blc_blog].articles limit: limit %} 
+          <div class="swiper-slide item">
+            <div class="blog-item">
+              <img src="{{ article.image.src | img_url: 'large' }}" alt="">
+              <div class="blog-excerpt fx">
+                <span class="entry-month">{{ article.created_at | date: "%B" }}</span>
+                <span class="entry-date updated">{{ article.created_at | date: "%d" }}</span>
+                <span class="entry-year">{{ article.created_at | date: "%Y" }}</span>
+              </div> 
+
+              <h3 class="text-truncate"><a href="{{ article.url }}" title="{{ article.title }}">{{ article.title }}</a></h3>
+
+              <div class="des entry-content">   
+                {{ article.excerpt | strip_html }}
+              </div>
+
+              <div class="comment-count d-none">
+                <a href="{{ article.url }}#Comments">
+                  <i class="fa fa-comment"></i> {{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}
+                </a>
+              </div> 
+			<div class="des">{{ article.content | truncatewords:15 }}</div>
+              <a class="readmore" href="{{ article.url }}" title="">{{ 'blogs.article.read_more' | t }}<i class="fa fa-caret-right" aria-hidden="true"></i></a>
+            </div>
+          </div>
+          {% else %}
+          {% for product in (1..limit) %}
+          <div class="swiper-slide item">
+            <div class="blog-item">
+                {{ 'image' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+              <br>
+              <h3><a href="/" title="/">Blogs Demo {{ forloop.index }}</a></h3>
+
+              <div class="des">   
+                The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 . . .
+              </div>
+
+              <a class="readmore" href="/" title="">{{ 'blogs.article.read_more' | t }}<i class="fa fa-caret-right" aria-hidden="true"></i></a>
+            </div>
+          </div>
+          {% endfor %}
+          {% endfor %}
+        </div>    
+        <div class="swiper-button-next d-none d-lg-block"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
+        <div class="swiper-button-prev d-none d-lg-block"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>
+        <div class="swiper-pagination d-block d-lg-none"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+"name": "GRT - Blog Carousel",
+"settings": [
+{
+"type": "blog",
+"id": "blc_blog",
+"label": "Select Blog"
+},
+{
+"type": "checkbox",
+"id": "fw",
+"label": "Full width"
+},
+{
+"type": "checkbox",
+"id": "s1",
+"label": "Show on Desktop",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "s2",
+"label": "Show on Tablet",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "s3",
+"label": "Show on Mobile",
+"default": true
+},
+{
+"type": "header",
+"content": "Title"
+},
+{
+"type": "text",
+"id": "prt_title",
+"label": "Title"
+},
+{
+"type": "text",
+"id": "prt_subtitle",
+"label": "Sub Title"
+},
+{
+"type": "header",
+"content": "Configuration"
+},
+{
+"type": "text",
+"id": "prt_pImg_width",
+"label": "Post image width",
+"default": "333"
+},         
+{
+"type": "text",
+"id": "prt_limit",
+"label": "Limit item",
+"default": "8"
+},
+{
+"type": "select",
+"id": "prt_item",
+"label": "Item\/row",
+"default": "5",
+"options": [
+{
+"value": "1",
+"label": "1"
+},
+{
+"value": "2",
+"label": "2"
+},
+{
+"value": "3",
+"label": "3"
+},
+{
+"value": "4",
+"label": "4"
+},
+{
+"value": "5",
+"label": "5"
+},
+{
+"value": "6",
+"label": "6"
+}
+]		
+},
+{
+"type": "select",
+"id": "prt_citem",
+"label": "Row",
+"default": "1",
+"options": [
+{
+"value": "1",
+"label": "1"
+},
+{
+"value": "2",
+"label": "2"
+},
+{
+"value": "3",
+"label": "3"
+},
+{
+"value": "4",
+"label": "4"
+},
+{
+"value": "5",
+"label": "5"
+},
+{
+"value": "6",
+"label": "6"
+}
+]
+},
+{
+"type": "select",
+"id": "prt_item_980",
+"label": "Item\/row  in Tablet (980)",
+"default": "4",
+"options": [
+{
+"value": "1",
+"label": "1"
+},
+{
+"value": "2",
+"label": "2"
+},
+{
+"value": "3",
+"label": "3"
+},
+{
+"value": "4",
+"label": "4"
+},
+{
+"value": "5",
+"label": "5"
+},
+{
+"value": "6",
+"label": "6"
+}
+]
+},
+{
+"type": "select",
+"id": "prt_item_768",
+"label": "Item\/row  in Mobile (768)",
+"default": "3",
+"options": [
+{
+"value": "1",
+"label": "1"
+},
+{
+"value": "2",
+"label": "2"
+},
+{
+"value": "3",
+"label": "3"
+},
+{
+"value": "4",
+"label": "4"
+},
+{
+"value": "5",
+"label": "5"
+},
+{
+"value": "6",
+"label": "6"
+}
+]
+},
+{
+"type": "select",
+"id": "prt_item_480",
+"label": "Item\/row  in Mobile 480 (480)",
+"default": "2",
+"options": [
+{
+"value": "1",
+"label": "1"
+},
+{
+"value": "2",
+"label": "2"
+},
+{
+"value": "3",
+"label": "3"
+},
+{
+"value": "4",
+"label": "4"
+},
+{
+"value": "5",
+"label": "5"
+},
+{
+"value": "6",
+"label": "6"
+}
+]
+},
+{
+"type": "text",
+"id": "prt_gutter",
+"label": "Grid gutter",
+"default": "30"  
+}
+
+],
+"presets": [
+{
+"name": "GRT - Blog Carousel",
+"category": "Blog"
+}
+]
+}
+{% endschema %}
+
+{% stylesheet %}
+
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

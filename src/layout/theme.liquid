@@ -1,0 +1,73 @@
+<!doctype html>
+<!--[if IE 9]> <html class="ie9 no-js" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> 
+<!--[if IE 7]><html lang="en" class="ie7"><![endif]-->
+<!--[if IE 8]><html lang="en" class="ie8"><![endif]-->
+<!--[if !IE]><html lang="en-US"><![endif]-->
+<html itemscope itemtype="http://schema.org/WebPage" class="no-js" lang="{{ shop.locale }}"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="theme-color" content="{{ settings.color_button }}">
+    <link rel="canonical" href="{{ canonical_url }}"> 
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+	{% if settings.faviconx != blank %}
+    <link rel="shortcut icon" href="{{ settings.faviconx | img_url: '32x' }}" type="image/png">
+ 	{% endif %}
+
+    {% capture seo_title %}
+    {{ page_title }}
+    {% if current_tags %}
+    {%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+    {% endif %}
+    {% if current_page != 1 %}
+    &ndash; {{ 'general.meta.page' | t: page: current_page }}
+    {% endif %}
+    {% unless page_title contains shop.name %}
+    &ndash; {{ shop.name }}
+    {% endunless %}
+    {% endcapture %}
+    <title>{{ seo_title }}</title>
+
+    {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {% include 'social-meta-tags' %}
+
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    </script>
+
+    {% include 'theme-config' %}
+    {% include 'head-script' %}
+    {{ content_for_header }}
+   
+  </head>
+
+  <body class="template-{{ template | split: '.' | first }} {{ settings.effect }}">
+    <div class="gr-wrapper {{ settings.wrapper_page_type }}">
+      {% section 'header' %}  
+      <div class="load-megamenu" style="display: none;">
+        {% include 'grt-megamenu' %}
+      </div>
+
+      <div class="page-container" id="PageContainer">
+        <main class="main-content" id="MainContent">
+          {% if template contains 'index' %} 
+          {% else %}
+          {% section 'breadcrumbs' %} 
+          {% endif %}
+          {{ content_for_layout }}
+        </main>
+
+        {% section 'footer' %}
+      </div>    
+      {% include 'popup-template' %}
+      {% include 'footer-scrip' %}
+      {% section 'cookie-accept' %}
+    </div>
+   
+  </body>
+</html>

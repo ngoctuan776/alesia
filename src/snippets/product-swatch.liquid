@@ -1,0 +1,61 @@
+{%assign option_name = settings.item_swatch_option %}
+
+{% for option in product.options %}
+  {% if option contains option_name %}
+  <ul class="variant-option__list variant-option__color">
+    {% assign index = forloop.index0 %}
+    {% assign colorlist = '' %}
+    {% assign color = '' %}
+    {% assign option_count = 0 %}
+    {% for variant in product.variants %}
+    {% capture color %}
+    {{ variant.options[index] }}
+    {% endcapture %}
+    {% unless colorlist contains color %}  
+    {% assign text = color | handleize %}
+    
+    {% assign use_img = false %}
+    {% if variant.image != null and settings.color_swatch_image %}
+    {% assign use_img = true %}
+    {%endif%}
+    
+    {% if option_count < 4 %}
+    
+    {%- assign img_variant = variant.image.src | product_img_url: settings.product_image_dimension -%}
+    <li class="list__item {% if option_count == 3 %}list__item--hidden{% endif %} {%if settings.color_swatch_image %}image{%endif%}">
+      <label {% if use_img %}data-image= "{{ img_variant }}"{% endif %}  style="{% if use_img %}  background-image: url({{ variant.image.src | img_url: '23x' }});{% else %}background-color: {{ color | split: ' ' | last | handle }}; {% endif %}"></label>
+      {% assign option_count = option_count | plus : 1 %}
+      <span class="list__item--tooltip">{{color}}</span>
+    </li>
+    {% endif %}
+        
+    {% capture tempList %}
+    {{ colorlist | append: color | append: ' ' }}
+    {% endcapture %}
+
+    {% assign colorlist = tempList %}
+    {% endunless %}
+
+    {% endfor %}
+    {% endif %}
+    {% endfor %}
+    
+    {% for product_option in product.options_with_values %}
+    {% if product_option.name contains option_name %}
+    {% if product_option.values.size >= 4 %}
+    {% unless product_option.values.size ==  4 %}
+    <li class="list__item list__item--more list__item--hidden {%if settings.color_swatch_image %}image{%endif%}">
+      <a href="{{ product.url}}" title="More Color">
+      	+ {{ product_option.values.size | minus : 4 }}
+      </a>
+    </li>
+    {% endunless %}
+     <li class="list__item list__item--more list__item--hidden" style="display: none;">
+      <a href="{{ product.url}}" title="More Color">
+      	+ {{ product_option.values.size | minus : 3 }}
+      </a>
+    </li>
+    {% endif %} 
+    </ul>
+  {% endif %}
+{% endfor %}

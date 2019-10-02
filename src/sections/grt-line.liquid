@@ -1,0 +1,112 @@
+<div class="wrap-line-box {% if section.settings.fullwidth %}container{% endif %}">
+  <div class="empty-box d-none d-xl-block" style="height: {{ section.settings.height }}px;">&nbsp;</div>
+  <div class="empty-box d-none d-xl-none d-md-block" style="height: {{ section.settings.sm_height }}px;">&nbsp;</div>
+  <div class="empty-box d-md-none d-xl-none" style="height: {{ section.settings.xs_height }}px;">&nbsp;</div>
+
+  <div class="line-box d-none d-xl-block" style="height: {{ section.settings.line_height }}px; background: {{ section.settings.line_bgColor }};">&nbsp;</div>
+  <div class="line-box d-none d-xl-none d-md-block" style="height: {{ section.settings.line_sm_height }}px; background: {{ section.settings.line_bgColor }};">&nbsp;</div>
+  <div class="line-box d-md-none d-xl-none" style="height: {{ section.settings.line_xs_height }}px; background: {{ section.settings.line_bgColor }};">&nbsp;</div>
+
+  <div class="empty-box d-none d-xl-block" style="height: {{ section.settings.bot_height }}px;">&nbsp;</div>
+  <div class="empty-box d-none d-xl-none d-md-block" style="height: {{ section.settings.bot_sm_height }}px;">&nbsp;</div>
+  <div class="empty-box d-md-none d-xl-none" style="height: {{ section.settings.bot_xs_height }}px;">&nbsp;</div>
+</div>
+{% schema %}
+  {
+    "name": "GRT - Line",
+    "settings": [
+	  {
+        "type": "checkbox",
+        "id": "fullwidth",
+        "label": "Full width",
+		"default": true
+      },
+	  {
+        "type": "header",
+        "content": "Top empty"
+      },
+      {
+        "type": "text",
+        "id": "height",
+        "label": "Height",
+        "default": "30"
+      },
+      {
+        "type": "text",
+        "id": "sm_height",
+        "label": "Height on Tablet",
+        "default": "30"
+      },
+      {
+        "type": "text",
+        "id": "xs_height",
+        "label": "Height on Phone",
+        "default": "30"
+      },
+	  {
+        "type": "header",
+        "content": "Line"
+      },
+	  {
+        "type": "text",
+        "id": "line_height",
+        "label": "Height",
+        "default": "1"
+      },
+	  {
+        "type": "text",
+        "id": "line_sm_height",
+        "label": "Height on Tablet",
+        "default": "1"
+      },
+	  {
+        "type": "text",
+        "id": "line_xs_height",
+        "label": "Height on Phone",
+        "default": "1"
+      },
+      {
+        "type": "color",
+        "id": "line_bgColor",
+        "label": "Line - background color",
+        "default": "#dedede"
+      },
+      {
+        "type": "header",
+        "content": "Bottom empty"
+      },
+      {
+        "type": "text",
+        "id": "bot_height",
+        "label": "Height",
+        "default": "30"
+      },
+      {
+        "type": "text",
+        "id": "bot_sm_height",
+        "label": "Height on Tablet",
+        "default": "30"
+      },
+      {
+        "type": "text",
+        "id": "bot_xs_height",
+        "label": "Height on Phone",
+        "default": "30"
+      }
+	  
+		
+	],
+    "presets": [
+      {
+        "name": "GRT - Line",
+        "category": "Device"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,64 @@
+
+{%- layout none -%}
+
+{%- if canonical_url contains 'q=' -%}
+{%- assign paginate = canonical_url | split: 'q=' -%}
+{%- assign last = paginate | last -%}
+{%- assign last = last | split: '+' -%}
+{%- assign column1 = last[0] | remove: "column1_" -%}
+{%- assign column2 = last[1] | remove: "column2_" -%}
+{%- assign column3 = last[2] | remove: "column3_" -%}
+{%- assign column4 = last[3] | remove: "column4_" -%}
+{%- assign column5 = last[4] | remove: "column5_" -%}
+{%- assign nav = last[5] | remove: "nav_" -%}
+{%- assign autoplay = last[6] | remove: "autoplay_" -%}
+{%- assign autospeed = last[7] | remove: "autospeed_" -%}
+{%- assign speed = last[8] | remove: "speed_" -%}
+{%- assign margin = last[9] | remove: "margin_" -%}
+{%- assign image_size = last[10] | remove: "image_size_" -%}
+{%- assign rtl = last[11] | remove: "rtl_" -%}
+{%- assign row 			= last[12] | remove: "row_"  -%}
+{%- assign limit 			= last[13] | remove: "limit_"     -%}
+{%- endif -%}
+
+{%- capture min_html -%}
+<div class="swiper-container swiper-tab-{{ block.id }}"  data-items="{{ item }}" data-margin="{{ section.settings.prt_gutter }}" data-row="{{ citem }}" data-md="{{ item980 }}" data-sm="{{ item768 }}" data-xs="{{ item480 }}">
+  <div class="swiper-wrapper">
+
+    {% paginate collection.products %}
+    {% for product in collections[col].products limit: limit %}
+    <div class="swiper-slide">
+      {% include 'product-grid-item' %}
+    </div>
+    {% else %}
+    {% for product in (1..limit) %}
+    <div class="swiper-slide">
+      <div class="product-item product-grid-item product_v1">
+        <div class="product-item-info">
+          <div class="product-image">
+            <a href="#" class="product-item-photo shadow-true">
+              {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+              {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+            </a>
+          </div>
+          <div class="product-item-details">
+            <a href="/" class="product-item-name">Product's Demo {{ forloop.index }}</a>
+          </div>
+          <div class="product-meta clearfix">
+            <div class="price-box pull-left">
+              <span class="money"> $200.00 </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    {% endfor %}
+    {% endpaginate %}
+  </div>    
+</div>
+
+
+{%- endcapture -%}
+
+{{min_html | strip_newlines | remove: "  "}} 

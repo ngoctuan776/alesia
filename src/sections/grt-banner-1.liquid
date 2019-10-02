@@ -1,0 +1,181 @@
+{% assign title = section.settings.widget_title %}
+{% assign subtitle = section.settings.subtitle %}
+
+<div class="widget widget-banner-1 text-center {% if section.settings.s1 %}d-xl-block{% else %}d-xl-none{% endif %} {% if section.settings.s2 %}d-md-block{% else %}d-md-none{% endif %} {% if section.settings.s3 %}d-block{% else %}d-none{% endif %}">
+  <div class="container_full">
+    <div class="widget-inner">
+      {% if title != blank %}
+      <div class="widget-title ">
+        {% if title != "" or subtitle != "" %}
+        {% if title != "" %}
+        <h3><span>{{ title }}</span></h3>
+        {% endif %}
+        {% if subtitle != "" %}
+        <p>{{ subtitle }}</p>
+        {% endif %}
+        {% endif %} 
+      </div>
+      {% endif %}
+      <div class="widget-content gr-ef">
+        <div class="row row-15">
+          <div class="col-sm col-lg-4 col-md-4 col-4">
+            <div class="banner-item">
+              <a href="{{ section.settings.i1_url }}" title="">
+                <span class="media-effect">
+                  {% if section.settings.i1_img != blank %}
+                  <img class="img-responsive lazyload {{lazyload}}" data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-sizes="auto" src="{{ "icon-loadings.svg" | asset_url }}" data-src="{{ section.settings.i1_img | img_url: 'master' }}" alt="{{ section.settings.i1_img.alt | default: shop.name }}"/>
+       
+                  {% else %}
+          			<img class="img-responsive lazyload {{lazyload}}" data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-sizes="auto" src="//placehold.it/630x715" alt="{{ shop.name }}" />
+                  {% endif %}
+                </span> 
+              </a>
+            </div>
+          </div>
+          <div class="col-sm col-lg-4 col-md-4 col-4 d-flex align-content-between flex-wrap">
+            <div class="banner-item">          
+              <a href="{{ section.settings.i2_url }}" title="">
+                <span class="media-effect">
+                  {% if section.settings.i1_img != blank %}
+                  <img class="img-responsive lazyload {{lazyload}}" data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-sizes="auto" src="{{ "icon-loadings.svg" | asset_url }}" data-src="{{ section.settings.i2_img | img_url: 'master' }}" alt="{{ section.settings.i2_img.alt | default: shop.name }}"/>
+                  {% else %}
+                  <img class="img-responsive lazyload {{lazyload}}" data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-sizes="auto" src="//placehold.it/630x350" alt="{{ shop.name }}" />
+                  {% endif %}
+                </span> 
+              </a>
+
+            </div>
+            <div class="banner-item">
+              <a href="{{ section.settings.i3_url }}" title="">
+                <span class="media-effect">
+                  {% if section.settings.i3_img != blank %}
+                  <img class="img-responsive lazyload {{lazyload}}" data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-sizes="auto" src="{{ "icon-loadings.svg" | asset_url }}" data-src="{{ section.settings.i3_img | img_url: 'master' }}" alt="{{ section.settings.i3_img.alt | default: shop.name }}"/>
+                  {% else %}
+                  <img class="img-responsive lazyload {{lazyload}}" data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-sizes="auto" src="//placehold.it/630x350" alt="{{ shop.name }}" />
+                  {% endif %}
+                </span> 
+              </a>
+            </div>
+          </div>
+          <div class="col-sm col-lg-4 col-md-4 col-4">
+            <div class="banner-item">
+              <a href="{{ section.settings.i4_url }}" title="">
+                <span class="media-effect">
+                  {% if section.settings.i1_img != blank %}
+                  <img class="img-responsive lazyload {{lazyload}}" data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-sizes="auto" src="{{ "icon-loadings.svg" | asset_url }}" data-src="{{ section.settings.i4_img | img_url: 'master' }}" alt="{{ section.settings.i4_img.alt | default: shop.name }}"/>
+                  {% else %}
+          			<img class="img-responsive lazyload {{lazyload}}" data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-sizes="auto" src="//placehold.it/630x715" alt="{{ shop.name }}" />
+                  {% endif %}
+                </span> 
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+"name": "GRT - Banner 1",
+"class": "section-layout-1",
+"settings": [
+{
+"type": "checkbox",
+"id": "s1",
+"label": "Show on Desktop",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "s2",
+"label": "Show on Tablet",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "s3",
+"label": "Show on Mobile",
+"default": true
+},
+{
+"type": "text",
+"id": "widget_title",
+"label": "Title"
+},
+{
+"type": "text",
+"id": "subtitle",
+"label": "Sub Title"
+},		
+{
+"type": "header",
+"content": "Item 1"
+},
+{
+"type": "url",
+"id": "i1_url",
+"label": "Url"
+},
+{
+"type": "image_picker",
+"id": "i1_img",
+"label": "Media"
+},
+{
+"type": "header",
+"content": "Item 2"
+},
+{
+"type": "url",
+"id": "i2_url",
+"label": "Url"
+},
+{
+"type": "image_picker",
+"id": "i2_img",
+"label": "Media"
+},
+{
+"type": "header",
+"content": "Item 3"
+},
+{
+"type": "url",
+"id": "i3_url",
+"label": "Url"
+},
+{
+"type": "image_picker",
+"id": "i3_img",
+"label": "Media"
+},
+{
+"type": "header",
+"content": "Item 4"
+},
+{
+"type": "url",
+"id": "i4_url",
+"label": "Url"
+},
+{
+"type": "image_picker",
+"id": "i4_img",
+"label": "Media"
+}
+
+],
+"presets": [
+{
+"name": "GRT - Banner 1",
+"category": "Image"
+}
+]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}

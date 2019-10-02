@@ -1,0 +1,100 @@
+{% capture logo %}
+<div class="text-center">
+  {% if template == 'index' %}
+  <h1 class="site-header-logo no-margin" itemscope itemtype="http://schema.org/Organization">
+    {% else %}
+    <div class="site-header-logo h1" itemscope itemtype="http://schema.org/Organization">
+      {% endif %}
+      {% if settings.logo and settings.logo_img %}
+      <a href="/" itemprop="url" class="site-header-logo-image">
+        {% capture image_size %}{{ settings.logo_max_width }}x{% endcapture %}
+        <img src="{{ settings.logo | img_url: image_size }}"
+             srcset="{{ settings.logo | img_url: image_size }} 1x, {{ settings.logo | img_url: image_size, scale: 2 }} 2x"
+             alt="{{ settings.logo.alt | default: shop.name }}"
+             itemprop="logo">
+      </a>
+      {% else %}
+      <a class="site-header-logo-link" href="/" itemprop="url"><span>{{ settings.logo_text }}</span></a>
+      {% endif %}
+      {% if template == 'index' %}
+      </h1>
+    {% else %}
+    </div>
+  {% endif %}
+</div>
+{% endcapture %}
+
+
+
+<header id="header" class="site-header hed-s1 clearfix {% if settings.header_fixed %}header--fixed {% endif %}{% if settings.header_sticky %} hide-from-print headroom headroom--top headroom--not-bottom{% endif %}">
+
+  {% if settings.pr %}
+  {% include 'promotion' %}
+  {% endif %}
+
+  {% if settings.topbar %}
+  {% include 'topbar' %}
+  {% endif %}
+
+  <div class="header-inner">
+    <div class="container-wapper">
+
+      <div class="row align-items-center">
+         <div class="col-12 col-md-4 col-lg-2">
+          {{logo}}
+        </div>
+        <div class="col-12 col-md-4 col-lg-5 main-menu clearfix d-md-none d-lg-block d-sm-none d-none pull-left">
+          {% include 'site-nav' %}
+        </div>
+
+
+        <div class="col-12 col-md-8 col-lg-5 header-dxm">
+          <div class="p-right">
+            <div class="mob-menu pull-left d-block d-lg-none dxm_grt">
+              <a class="mob-btn" title="" href="#">
+                <svg x="0px" y="0px" class="icon icon-menu" viewBox="0 0 20 20" enable-background="new 0 0 20 20">
+                  <rect y="1" width="20" height="2"></rect>
+                  <rect y="6" width="20" height="2"></rect>
+                  <rect y="11" width="20" height="2"></rect>
+                </svg>
+              </a>
+            </div>
+            <div class="header-wishlist grt-dropdown dxm_grt">
+              <a onclick="window.location.href='/pages/wishlist'" title="search"><i class="icon-heart1"></i></a>
+            </div>
+            {% include 'mini-cart' with 'default' %}
+            {% include 'currency-picker' %}
+
+            {% if shop.customer_accounts_enabled %}
+            {% if customer %}
+            <div class="account grt-dropdown dxm_grt">
+              <a href="#" title="account"><i class="icon-users"></i></a>
+              <div class="grt-dropdown--content">
+                {% include 'customer-minibox' %}
+              </div>
+            </div>
+            {% else %}
+            <div class="account grt-dropdown dxm_grt">
+              <a href="#" title="account"><i class="icon-users"></i></a>
+              <div class="grt-dropdown--content">
+                {% include 'customer-minibox' %}
+              </div>
+            </div>
+            {% endif %}
+            {% endif %}
+            <div class="header-search grt-dropdown dxm_grt">
+              <a href="#" title="search"><i class="icon-search1"></i></a>
+              {% include 'mini-search-form' %}
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+
+{% if settings.header_sticky %}
+<div class="header-vsb hed-s1 d-none{% if section.settings.header_absolute %}fheader-absolute{% endif %}"></div>
+{% endif %}

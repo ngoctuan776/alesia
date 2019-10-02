@@ -1,0 +1,20 @@
+{% assign product = all_products[block.settings.product] %} 
+<div class="product-item-info product-info" data-available="{{ product.available }}">
+  <div class="product-item-image">
+    <a href="{{ product.url | within: collection }}" class="product-item-photo shadow-{{ settings.product_img_shadow }}">
+      <img src="{{ product.featured_image.src | img_url: 'master' }}" alt="{{ product.featured_image.alt | escape }}">
+    </a>
+  </div>
+  <div class="product-item-info">
+    <h4 class="product-name text-truncate"><a href="{{ product.url }}" title="{{ product.title }}">{{ product.title }}</a></h4>
+    <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+    <div class="product-price">              
+      {{ product.price | money }}              
+      {% if product.compare_at_price_max > product.price %}
+      <s class="sale-price">
+        {{ product.compare_at_price_max | money }}
+      </s>
+      {% endif %}
+    </div>
+  </div>
+</div>

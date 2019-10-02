@@ -1,0 +1,194 @@
+{% if section.settings.breadcrumbs_enable %}
+{% assign not = section.settings.breadcrumbs_donotuse %}
+{% unless template contains 'index' %} 
+
+
+{% if template contains 'collection' %}
+{% assign handl = collection.handle %}
+{% elsif template contains 'product' %}
+{% assign handl = product.handle %}
+{% elsif template contains 'page' %}
+{% assign handl = page.handle %} 
+{% elsif template contains '404' %}
+{% assign handl = '404' %} 
+{% elsif template contains 'blog' %}
+{% assign handl = blog.handle %} 
+{% elsif template contains 'article' %}
+{% assign handl = article.handle %} 
+{% elsif template contains 'search' %}
+{% assign handl = 'search' %} 
+{% else %}
+{% endif %}
+
+{% unless not contains template %}
+{% unless not contains handl %}
+
+{% assign item_style = '' %} 
+{% for block in section.blocks %}
+{% if block.settings.item_enable %}
+
+  {% assign blockHandl = block.settings.item_handle %}
+  {% if template contains blockHandl %}
+    {% assign item_style = block.settings.item_style %} 
+    {% assign item_showTitle = block.settings.item_showTitle %}
+    {% assign item_title = block.settings.item_title %} 
+    {% assign item_image = block.settings.item_image %} 
+    {% assign item_bgColor = block.settings.item_bgColor %} 
+    {% assign item_textColor = block.settings.item_textColor %} 
+    {% assign item_linkColor = block.settings.item_linkColor %} 
+    {% assign item_sColor = block.settings.item_sColor %} 
+    {% assign item_fullwidth = block.settings.item_fullwidth %} 
+    {% assign item_spaceBottom = block.settings.item_spaceBottom %} 
+    {% endif %}
+
+
+    {% if handl != '' and handl == blockHandl %}
+    {% assign item_style = block.settings.item_style %} 
+    {% assign item_showTitle = block.settings.item_showTitle %}
+    {% assign item_title = block.settings.item_title %} 
+    {% assign item_image = block.settings.item_image %} 
+    {% assign item_bgColor = block.settings.item_bgColor %} 
+    {% assign item_textColor = block.settings.item_textColor %} 
+    {% assign item_linkColor = block.settings.item_linkColor %} 
+	{% assign item_sColor = block.settings.item_sColor %} 
+    {% assign item_fullwidth = block.settings.item_fullwidth %} 
+    {% assign item_spaceBottom = block.settings.item_spaceBottom %} 
+	{% break %}
+  {% endif %}
+
+{% endif %}
+
+{% endfor %}
+{% if item_style != '' %}
+{% include item_style %}
+
+{% endif %}
+
+{% endunless %}
+{% endunless %}  
+{% endunless %}  
+{% endif %}
+<style>
+  .breadcrumb-v1{
+    background: {{ item_bgColor }};
+  }
+</style>
+{% schema %}
+{
+    "name": "Breadcrumbs",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "breadcrumbs_enable",
+        "label": "Enable",
+		"default": true
+      },
+      {
+        "type": "textarea",
+        "id": "breadcrumbs_donotuse",
+        "default": "contact, 404",
+        "label": "Not used for (template or handle)"
+      }
+	
+	],
+
+    "blocks": [
+      {
+      "type": "image",
+      "name": "Customize item",
+      "settings": [
+          {
+            "type": "checkbox",
+            "id": "item_enable",
+            "label": "Enable"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Block Title"
+          },
+		  {
+            "type": "text",
+            "id": "item_handle",
+            "label": "Page handle or template"
+          },
+		  {
+            "type": "checkbox",
+            "id": "item_showTitle",
+            "label": "Show title"
+          },
+		  {
+            "type": "text",
+            "id": "item_title",
+            "label": "Title"
+          },
+	 	  {
+            "type": "checkbox",
+            "id": "item_fullwidth",
+            "label": "Fullwidth"
+          },
+		  {
+             "type": "radio",
+             "id": "item_style",
+             "options": [
+                { "value": "breadcrumb-v1", "label": "Style 1"},
+                { "value": "breadcrumb-v2", "label": "Style 2"},
+                { "value": "breadcrumb-v3", "label": "Style 3"}
+             ],
+             "label": "Style"
+		  },
+		  {
+            "type": "image_picker",
+            "id": "item_image",
+            "label": "Background image (for Style 2)"
+          },
+          {
+            "type": "color",
+            "id": "item_bgColor",
+            "label": "Background color (for style 1, 3)",
+            "default": "#f3f3f3"
+          },
+		  {
+            "type": "color",
+            "id": "item_textColor",
+            "label": "Text color",
+            "default": "#121210"
+          },
+		  {
+            "type": "color",
+            "id": "item_linkColor",
+            "label": "Link color",
+            "default": "#c1c0c0"
+          },
+		  {
+            "type": "color",
+            "id": "item_sColor",
+            "label": "/ color",
+            "default": "#c1c0c0"
+          },
+		  {
+            "type": "checkbox",
+            "id": "item_spaceBottom",
+            "label": "Space bottom",
+			"default": true
+          }			
+
+      ]
+      }
+    ]
+
+}
+{% endschema %}
+ 
+{% stylesheet %}
+
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
+
+
+
+
+
+

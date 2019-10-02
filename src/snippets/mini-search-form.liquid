@@ -1,0 +1,22 @@
+{% if mini-search-form == "mobile" %}
+<form action="/search" method="get" class="search-header search input-group " role="search">
+  <input class="input-group-field" type="search" name="q" placeholder="{{ 'general.search.placeholder' | t }}" aria-label="{{ 'general.search.placeholder' | t }}">
+  
+  <span class="input-group-btn src src-left">
+    <button class="s" type="submit">          
+      <span class=""><i class="fa fa-search"></i></span>
+    </button>
+  </span>
+</form>
+{% else %}
+<form action="/search" method="get" class="search-header search input-group grt-dropdown--content" role="search">
+  <input class="input-group-field" type="search" name="q" placeholder="{{ 'general.search.placeholder' | t }}" aria-label="{{ 'general.search.placeholder' | t }}">
+  
+  <span class="input-group-btn src src-left">
+    <button class="s" type="submit"> 
+      <i class="fa fa-search"></i>
+      <span class="">{{ 'general.search.submit' | t }}</span>
+    </button>
+  </span>
+</form>
+{% endif %}

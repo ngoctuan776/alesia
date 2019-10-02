@@ -1,0 +1,363 @@
+
+
+{% assign list_collection 	= section.settings.list_collection %}
+{% assign nav				= section.settings.owl_navigation  %}
+{% assign margin			= section.settings.owl_margin  %}
+{% assign autoplay			= section.settings.owl_autoplay  %}
+{% assign autospeed			= section.settings.owl_autoplay_speed  %}
+{% assign speed				= section.settings.owl_speed  %}
+{% assign column1			= section.settings.column1  %}
+{% assign column2 			= section.settings.column2  %}
+{% assign column3 			= section.settings.column3  %}
+{% assign column4 			= section.settings.column4  %}
+{% assign column5 			= section.settings.column5  %}
+{% assign limit 			= section.settings.limit    %}
+{% assign row 				= section.settings.row      %}
+{% assign show_container	= section.settings.show_container    %}
+{% assign image_size		= section.settings.image_size    %}
+{% assign menuhandle 		= section.settings.nav_handle %}
+{% assign title 			= section.settings.title %}
+{% assign rtl 				= settings.enable_rtl %}
+
+<div class="widget-inner widget widget-productTabs">
+  <div class="{% if section.settings.fw %}fw{% else %}container{% endif %}"> 
+
+    <div class="widget-title text-center">  
+      {% if subtitle != "" %}
+      <p class="ct_font font-italic">{{ subtitle }}</p>
+      {% endif %} 
+      {% if title != "" %}
+      <h3>{{ title }}</h3>
+      {% endif %} 
+    </div>
+
+    <div class="widget-content"> 
+      <div class="e-tabs">
+        <ul class="tabs tabs-title widget-title text-center">
+          {% for block in section.blocks %}
+          {% assign col = block.settings.prt_collection %}            	
+          <li class="tab-link" data-atts="{{ collections[col].url }}?page=1&q=column1_{{ column1 }}+column2_{{ column2 }}+column3_{{ column3 }}+column4_{{ column4 }}+column5_{{ column5 }}+nav_{{ nav }}+autoplay_{{ autoplay }}+autospeed_{{ autospeed }}+speed_{{ speed }}+margin_{{ margin }}+image_size_{{ image_size }}+rtl_{{ rtl }}+row_{{ row }}+limit_{{ limit }}&view=ajax_tab">
+            <h3>{% if block.settings.title !="" %}{{block.settings.title}}{% else %}{{ collections[col].title }}{% endif %}</h3>
+          </li> 
+          {% endfor %}
+        </ul> 
+     
+        <div class="widget-content tabs-content">
+          <div class="ltabs-products-loader"><img class="img-responsive" src="{{ "icon-loadings.svg" | asset_url }}" alt="loading" /></div>
+          {% for block in section.blocks %}
+          {% assign col = block.settings.prt_collection %}
+			
+          {% if forloop.first == true %}
+          
+            <div class="swiper-container swiper-tab-{{ block.id }}"  data-items="{{ column1 }}" data-margin="{{ margin }}" data-row="{{ row }}" data-md="{{ column3 }}" data-sm="{{ column4 }}" data-xs="{{ column5 }}">
+              <div class="swiper-wrapper">
+                {% for product in collections[col].products limit: limit %}
+                <div class="swiper-slide">
+                  {% include 'product-grid-item' %}
+                </div>
+                {% else %}
+                {% for product in (1..limit) %}
+                <div class="swiper-slide">
+                  <div class="product-item product-grid-item product_v1">
+                    <div class="product-item-info">
+                      <div class="product-image">
+                        <a href="#" class="product-item-photo shadow-true">
+                          {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                          {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                        </a>
+                      </div>
+                      <div class="product-item-details">
+                        <a href="/" class="product-item-name">Product's Demo {{ forloop.index }}</a>
+                      </div>
+                      <div class="product-meta clearfix">
+                        <div class="price-box pull-left">
+                          <span class="money"> $200.00 </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                {% endfor %}
+              </div>    
+              <div class="swiper-button-next d-none d-lg-block"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
+              <div class="swiper-button-prev d-none d-lg-block"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>
+              <div class="swiper-pagination d-block d-lg-none"></div>
+
+            </div>
+          
+          {% endif %}
+          {% endfor %}
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+"name": "Home - Product Tabs",
+"class": "home-section clearfix",
+"settings": [
+{
+"type": "checkbox",
+"id": "fw",
+"label": "Full width"
+},
+{
+"type": "header",
+"content": "Garenal Setting"
+},
+{
+"type": "text",
+"id": "title",
+"label": "Widget Name",
+"default": "Product Tabs"
+},
+{
+"type": "text",
+"id": "image_size",
+"label": "Image size",
+"default": "270x",
+"info": "[Size parameters](https://help.shopify.com/themes/liquid/filters/url-filters#size-parameters)"
+},
+{
+"type": "header",
+"content": "Owl Settings"
+},
+{
+"type": "select",
+"id": "column1",
+"label": "#Column 1",
+"default": "4",
+"info": "For Large desktops have screen > 1200px",
+"options":[
+{
+"value": "1",
+"label": "1"
+},
+{
+"value": "2",
+"label": "2"
+},
+{
+"value": "3",
+"label": "3"
+},
+{
+"value": "4",
+"label": "4"
+},
+{
+"value": "5",
+"label": "5"
+}
+]
+},
+{
+"type": "select",
+"id": "column2",
+"label": "#Column 2",
+"default": "3",
+"info": "For Tablets have screen 992px to 1199px.",
+"options":[
+{
+"value": "1",
+"label": "1"
+},
+{
+"value": "2",
+"label": "2"
+},
+{
+"value": "3",
+"label": "3"
+},
+{
+"value": "4",
+"label": "4"
+},
+{
+"value": "5",
+"label": "5"
+}
+]
+},
+{
+"type": "select",
+"id": "column3",
+"label": "#Column 3",
+"info": "For Tablets have screen 768px to 991px.",
+"default": "2",
+"options":[
+{
+"value": "1",
+"label": "1"
+},
+{
+"value": "2",
+"label": "2"
+},
+{
+"value": "3",
+"label": "3"
+},
+{
+"value": "4",
+"label": "4"
+},
+{
+"value": "5",
+"label": "5"
+}
+]
+},
+{
+"type": "select",
+"id": "column4",
+"label": "#Column 4",
+"default": "2",
+"info": "For Smartphones landscape have screen 568px to 767px",
+"options":[
+{
+"value": "1",
+"label": "1"
+},
+{
+"value": "2",
+"label": "2"
+},
+{
+"value": "3",
+"label": "3"
+},
+{
+"value": "4",
+"label": "4"
+},
+{
+"value": "5",
+"label": "5"
+}
+]
+},
+{
+"type": "select",
+"id": "column5",
+"label": "#Column 5",
+"default": "1",
+"info": "For Smartphones have screen 320px to 567px.",
+"options":[
+{
+"value": "1",
+"label": "1"
+},
+{
+"value": "2",
+"label": "2"
+}
+]
+},
+{
+"type": "select",
+"id": "row",
+"label": "Sellect Row",
+"default": "1",
+"options":[
+{
+"value": "1",
+"label": "1"
+},
+{
+"value": "2",
+"label": "2"
+}
+]
+},
+{
+"type": "text",
+"id": "limit",
+"label": "Limit Item",
+"default": "8"
+},
+{
+"type": "checkbox",
+"id": "owl_navigation",
+"label": "Show navigation",
+"default": true
+},
+{
+"type": "text",
+"id": "owl_margin",
+"label": "Margin Item",
+"default": "30"
+},
+{
+"type": "checkbox",
+"id": "owl_autoplay",
+"label": "Owl Auto Play",
+"default": false
+},
+{
+"type": "text",
+"id": "owl_autoplay_speed",
+"label": "Owl Auto Play speed",
+"info": "Default: 10000(ms)",
+"default": "10000"
+},
+{
+"type": "text",
+"id": "owl_speed",
+"label": "Owl Speed",
+"info": "Slide/Fade animation speed",
+"default": "300"
+}
+
+],
+"blocks": [
+{
+"type": "product",
+"name": "Add tabs",
+"settings": [
+{
+"type": "text",
+"id": "title",
+"label": "Title",
+"info": "Default collection title if empty."
+},
+{
+"type": "collection",
+"id": "prt_collection",
+"label": "Select collection"
+}
+]
+}
+],
+"presets": [
+{
+"name": "Home Product Tabs",
+"category": "Product",
+"blocks": [
+{
+"type": "product"
+},
+{
+"type": "product"
+},
+{
+"type": "product"
+}
+]
+}
+]
+}
+{% endschema %}
+
+{% stylesheet %}
+
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

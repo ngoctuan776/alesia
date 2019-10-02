@@ -1,0 +1,116 @@
+
+
+{%- assign social_icons = false -%}
+
+{% if
+  settings.social_twitter_link != blank
+or settings.social_facebook_link != blank
+or settings.social_pinterest_link != blank
+or settings.social_instagram_link != blank
+or settings.social_tumblr_link != blank
+or settings.social_snapchat_link != blank
+or settings.social_youtube_link != blank
+or settings.social_vimeo_link != blank
+or template contains 'article'
+or template contains 'blog'
+%}
+{%- assign social_icons = true -%}
+{% endif %}
+{% if settings.gotop_enable %}
+<div id="back-to-top" class="{% if settings.gotopmobile_enable %}{% else %}hidden-xs{% endif %}"><span></span></div>
+{% endif %}  
+<footer id="footer1" style="background: {{ section.settings.ft_bg }};"> 
+  <div class="footerWrapper">
+    <div class="site-footer">
+      <div class="container">
+        <div class="inner text-center">
+            <div class="item">
+              <div class="fwidget site-header-logo">
+                {% if section.settings.ft_title1 != blank %}
+                <div class="footer-title"><h3>{{ section.settings.ft_title1 }}</h3><span class="fwidget_mobile"><i class="fa fa-chevron-circle-down"></i></span></div>
+                {% endif %}
+                <div class="widget-content"> 
+                  <div class="f-logo">
+                    {% if section.settings.logo and section.settings.logo_img %}
+                    <a href="/" itemprop="url" class="site-header-logo-image">
+                      {% capture image_size %}{{ section.settings.logo_max_width }}x{% endcapture %}
+                      {% if section.settings.logo != blank %}
+                      <img src="{{ section.settings.logo | img_url: image_size }}"
+                           srcset="{{ section.settings.logo | img_url: image_size }} 1x, {{ section.settings.logo | img_url: image_size, scale: 2 }} 2x"
+                           alt="{{ section.settings.logo.alt | default: shop.name }}"
+                           itemprop="logo">
+                      {% else %}
+                      <a class="site-header-logo-link" {% if section.settings.logo_text_size != '' %}style="font-size: {{ section.settings.logo_text_size }};"{% endif %} href="/" itemprop="url"><span>{{ section.settings.logo_text }}</span></a>
+
+                      {% endif %}
+                    </a>
+                    {% else %}
+                    <a class="site-header-logo-link" href="/" itemprop="url"><span>{{ section.settings.logo_text }}</span></a>
+                    {% endif %}
+                  </div> 
+
+                  <div class="s-info">
+                    {% if section.settings.ft_address != blank %}
+                    <p>
+                      {{ section.settings.ft_address }}
+                    </p>
+                    {% endif %}
+                  </div>
+                  {% include 'social_icons' %}
+                </div>
+              </div>
+          </div>
+            {%- assign footer_linklist = section.settings.footer_linklist -%}
+            {% if linklists[footer_linklist].links.size > 0 %}
+            <div class="footer-menu">
+              <ul class="list-menu">
+                {% for link in linklists[footer_linklist].links %}
+                <li>
+                  <a href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="empty-box d-none d-xl-block" style="height: 56px;">&nbsp;</div>
+  <div class="empty-box d-none d-xl-none d-md-block" style="height: 0px;">&nbsp;</div>
+  <div class="empty-box d-md-none d-xl-none" style="height: 0;">&nbsp;</div>
+  {%- assign coppyright = section.settings.footer_coppyright %}
+  <div class="coppyright">
+    <div class="container text-center">
+      <div class="inner">
+        <div class="row">
+          <div class="col-12 col-sm-12 order-xs-2">
+            {% if section.settings.show_powered_by %}
+            {% if section.settings.show_payment_icons  %}
+            <span class="pull-left">
+              {% endif %}
+              {% if coppyright != "" %}<span>{{coppyright}}</span>{% else %} &copy; {{ 'now' | date: "%Y" }}, {{ shop.name | link_to: '/' }}. {{ powered_by_link }}{% endif %}
+              {% if section.settings.show_payment_icons  %}
+            </span>
+            {% endif %}
+            {% endif %}
+          </div>
+
+          <div class="col text-center hidden">
+            <div class="back-to-top"><i class="fa fa-chevron-up"></i></div>
+          </div>
+
+          <div class="col-12 col-sm-12 order-xs-1">
+            {% if section.settings.show_payment_icons  %}            
+            <span class="site-payment  {% if section.settings.show_powered_by %}pull-right{% endif %}">     
+              {{ section.settings.footer_payment | img_url: '300x40' | img_tag: section.settings.footer_payment.alt, 'footer__icon' }}
+            </span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</footer>

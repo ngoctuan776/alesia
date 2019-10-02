@@ -1,0 +1,366 @@
+{% assign limit = section.settings.prt_limit %}
+{% assign item = section.settings.prt_item %}
+{% assign citem = section.settings.prt_citem %}
+{% assign item980 = section.settings.prt_item_980 %}
+{% assign item768 = section.settings.prt_item_768 %}
+{% assign item480 = section.settings.prt_item_480 %}
+{% assign title = section.settings.prt_title %}
+{% assign subtitle = section.settings.prt_subtitle %}
+
+{% capture image_size %}{{ section.settings.prt_pImg_width }}x{% endcapture %} 
+
+{% assign row = section.settings.prt_citem %}
+
+<div class="widget-inner widget widget-productCarousel-banner {% if section.settings.s1 %}d-xl-block{% else %}d-xl-none{% endif %} {% if section.settings.s2 %}d-md-block{% else %}d-md-none{% endif %} {% if section.settings.s3 %}d-block{% else %}d-none{% endif %}">
+  <div class="{% if section.settings.fw %}fw{% else %}container{% endif %}"> 
+
+
+    {% case section.settings.banner_width %}
+    {% when '0' %}   
+    {% assign left-w = 'd-none' %}
+    {% assign right-w = 'col-md-12' %}    
+    {% assign img-w = '0' %} 
+    {% when '3' %}
+    {% assign left-w = 'col-md-3' %}
+    {% assign right-w = 'col-md-9' %}
+    {% assign img-w = '270x' %}
+    {% when '6' %} 
+    {% assign left-w = 'col-md-6' %}
+    {% assign right-w = 'col-md-6' %}
+    {% assign img-w = '570x' %}
+    {% else %}
+    {% assign left-w = 'col-md-9' %}
+    {% assign right-w = 'col-md-3' %}
+    {% assign img-w = '870x' %}
+    {% endcase %}
+
+    <div class="row">
+
+      <div class="{{ left-w }} order-{{ section.settings.banner_align }} d-none d-sm-none d-md-block">
+        {% if section.settings.item_image != blank %}
+        {{ section.settings.item_image | img_url: 'master' | img_tag: section.settings.item_image.alt, '' }}
+        {% else %}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}    
+      </div>
+      <div class="{{ right-w }}">
+        {% if title != "" or subtitle != "" %}
+        <div class="widget-title text-{{ section.settings.align }}">      
+          {% if title != "" %}
+          <h3>{{ title }}</h3>
+          {% endif %}
+          {% if subtitle != "" %}
+          <p>{{ subtitle }}</p>
+          {% endif %}       
+        </div>
+        {% endif %}
+
+        <div class="widget-content"> 
+          {% assign col = section.settings.prt_collection %}
+
+          <div class="swiper-container" data-item="{{ item }}" data-space="{{ section.settings.prt_gutter }}" data-row="{{ citem }}" data-980="{{ item980 }}" data-768="{{ item768 }}" data-480="{{ item480 }}">
+            <div class="swiper-wrapper">  
+              {% for product in collections[col].products limit: limit %}
+              <div class="swiper-slide">
+                {% include 'grt-product-grid-item' %}
+              </div>
+              {% endfor %}
+            </div>    
+            <div class="swiper-button-next">»</div>
+            <div class="swiper-button-prev">«</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+"name": "GRT - Product C-Banner",
+"settings": [
+{
+"type": "checkbox",
+"id": "fw",
+"label": "Full width"
+},
+{
+"type": "checkbox",
+"id": "s1",
+"label": "Show on Desktop",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "s2",
+"label": "Show on Tablet",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "s3",
+"label": "Show on Mobile",
+"default": true
+},
+{
+"type": "header",
+"content": "Title"
+},
+{
+"type": "text",
+"id": "prt_title",
+"label": "Title"
+},
+{
+"type": "text",
+"id": "prt_subtitle",
+"label": "Sub Title"
+},
+{
+"type":      "radio",
+"id":        "align",
+"label":     "Title align",
+"options": [
+{ "value": "left", "label": "Left" },
+{ "value": "right", "label": "Right" },
+{ "value": "center", "label": "Center" }
+],
+"default":   "left"
+},   
+{
+"type": "header",
+"content": "Banner"
+},
+{
+"type": "image_picker",
+"id": "item_image",
+"label": "Banner image"
+},
+{
+"type":      "radio",
+"id":        "banner_width",
+"label":     "Banner width",
+"options": [
+{ "value": "0", "label": "0" },
+{ "value": "3", "label": "25%" },
+{ "value": "6", "label": "50%" },
+{ "value": "9", "label": "75%" }
+],
+"default":   "6"
+}, 
+{
+"type":      "radio",
+"id":        "banner_align",
+"label":     "Banner align",
+"options": [
+{ "value": "0", "label": "Left" },
+{ "value": "12", "label": "Right" }
+],
+"default":   "0"
+},
+{
+"type": "header",
+"content": "Configuration"
+},
+{
+"type": "collection",
+"id": "prt_collection",
+"label": "Select collection"
+},
+{
+"type": "text",
+"id": "prt_pImg_width",
+"label": "Product image width",
+"default": "333"
+},      
+{
+"type": "text",
+"id": "prt_limit",
+"label": "Limit item",
+"default": "8"
+},
+{
+"type": "select",
+"id": "prt_item",
+"label": "Item\/row",
+"default": "5",
+"options": [
+{
+"value": "1",
+"label": "1"
+},
+{
+"value": "2",
+"label": "2"
+},
+{
+"value": "3",
+"label": "3"
+},
+{
+"value": "4",
+"label": "4"
+},
+{
+"value": "5",
+"label": "5"
+},
+{
+"value": "6",
+"label": "6"
+}
+]		
+},
+{
+"type": "select",
+"id": "prt_citem",
+"label": "Row",
+"default": "1",
+"options": [
+{
+"value": "1",
+"label": "1"
+},
+{
+"value": "2",
+"label": "2"
+},
+{
+"value": "3",
+"label": "3"
+},
+{
+"value": "4",
+"label": "4"
+},
+{
+"value": "5",
+"label": "5"
+},
+{
+"value": "6",
+"label": "6"
+}
+]
+},
+{
+"type": "select",
+"id": "prt_item_980",
+"label": "Item\/row  in Tablet (980)",
+"default": "4",
+"options": [
+{
+"value": "1",
+"label": "1"
+},
+{
+"value": "2",
+"label": "2"
+},
+{
+"value": "3",
+"label": "3"
+},
+{
+"value": "4",
+"label": "4"
+},
+{
+"value": "5",
+"label": "5"
+},
+{
+"value": "6",
+"label": "6"
+}
+]
+},
+{
+"type": "select",
+"id": "prt_item_768",
+"label": "Item\/row  in Mobile (768)",
+"default": "3",
+"options": [
+{
+"value": "1",
+"label": "1"
+},
+{
+"value": "2",
+"label": "2"
+},
+{
+"value": "3",
+"label": "3"
+},
+{
+"value": "4",
+"label": "4"
+},
+{
+"value": "5",
+"label": "5"
+},
+{
+"value": "6",
+"label": "6"
+}
+]
+},
+{
+"type": "select",
+"id": "prt_item_480",
+"label": "Item\/row  in Mobile 480 (480)",
+"default": "2",
+"options": [
+{
+"value": "1",
+"label": "1"
+},
+{
+"value": "2",
+"label": "2"
+},
+{
+"value": "3",
+"label": "3"
+},
+{
+"value": "4",
+"label": "4"
+},
+{
+"value": "5",
+"label": "5"
+},
+{
+"value": "6",
+"label": "6"
+}
+]
+},
+{
+"type": "text",
+"id": "prt_gutter",
+"label": "Grid gutter",
+"default": "30"  
+}
+
+],
+"presets": [
+{
+"name": "GRT - Product C-Banner",
+"category": "Product"
+}
+]
+}
+{% endschema %}
+
+{% stylesheet %}
+
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

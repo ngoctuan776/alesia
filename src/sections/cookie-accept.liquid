@@ -1,0 +1,158 @@
+{%if section.settings.display %}
+<div id="cookies-accept" class="msg-cookie">
+
+  <div class="content-cookies">
+    <div class="des-cookies">
+      {{ section.settings.content }}
+    </div>
+
+    <button class="btn">
+      {{ section.settings.button_text }}
+    </button>
+
+  </div>
+
+  <a href="javascript:void(0)" class="close">
+    <i class="fa fa-close"></i>
+  </a>
+
+</div>
+{%endif%}
+{% schema %}
+{
+  "name": "GRT Cookie Popup",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "display",
+      "label": "Active Cookies",
+      "default": true
+    },
+	  {
+        "type": "radio",
+        "id": "align",
+        "label": "Position Popup",
+
+      "options": [
+          { "value": "left", "label": "Left" },
+          { "value": "right", "label": "Right" }
+        ],
+          "default": "right"
+      },
+    {
+      "type": "textarea",
+      "id": "content",
+      "label": "Message",
+      "default": "The cookie settings on this website are set to 'allow all cookies' to give you the very best experience. Please click Accept Cookies to continue to use the site."
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#666"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#fff"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Accept Cookies"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button Background Color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "close_button_color",
+      "label": "Close Button Color",
+      "default": "#fff"
+    }
+  ]
+}
+{% endschema %}
+{% comment%}
+<style>
+  #cookies-accept .btn{
+    color:{{section.settings.button_text_color}};
+    border-color:{{section.settings.button_background_color}};
+    background:{{section.settings.button_background_color}};
+    text-shadow:none;
+    margin-top:20px;
+    box-shadow:none;
+    font-weight:600;
+  }
+  #cookies-accept .btn:hover{
+    opacity: 0.8;
+  }
+  #cookies-accept .close{
+    display: flex;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    line-height: 0;
+    width: 21px;
+    height: 21px;
+   	opacity:1;
+  }
+  #cookies-accept .close .fa{
+    color :{{section.settings.close_button_color}};
+  }
+  
+  #cookies-accept{
+    display: none;
+    z-index: 999;
+    padding: 20px 30px 25px 25px;
+    border-radius: 5px;
+    background: {{section.settings.background_color | color_modify:'alpha',0.9}};
+    position: fixed;
+    width: auto;
+    bottom: 0px;
+    margin: 23px;
+  }
+  @media (min-width: 768px){
+    #cookies-accept {
+      bottom: 3em;
+      width: 480px;
+      position:fixed;
+      margin: 0;
+      {{section.settings.align}}: 3em; 
+    }
+  }
+  #cookies-accept .content-cookies{
+    color:{{section.settings.text_color}};
+    font-weight: 500;
+    padding-right: 20px;
+  }  
+</style>
+{% endcomment%}

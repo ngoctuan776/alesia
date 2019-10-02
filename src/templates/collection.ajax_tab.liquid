@@ -1,0 +1,44 @@
+
+{%- layout none -%}
+
+{%- if canonical_url contains 'q=' -%}
+{%- assign paginate = canonical_url | split: 'q=' -%}
+{%- assign last = paginate | last -%}
+{%- assign last = last | split: '+' -%}
+{%- assign column1 = last[0] | remove: "column1_" -%}
+{%- assign column2 = last[1] | remove: "column2_" -%}
+{%- assign column3 = last[2] | remove: "column3_" -%}
+{%- assign column4 = last[3] | remove: "column4_" -%}
+{%- assign column5 = last[4] | remove: "column5_" -%}
+{%- assign nav = last[5] | remove: "nav_" -%}
+{%- assign autoplay = last[6] | remove: "autoplay_" -%}
+{%- assign autospeed = last[7] | remove: "autospeed_" -%}
+{%- assign speed = last[8] | remove: "speed_" -%}
+{%- assign margin = last[9] | remove: "margin_" -%}
+{%- assign image_size = last[10] | remove: "image_size_" -%}
+{%- assign rtl = last[11] | remove: "rtl_" -%}
+{%- assign row 			= last[12] | remove: "row_"  -%}
+{%- assign limit 			= last[13] | remove: "limit_"     -%}
+{%- endif -%}
+
+{%- capture min_html -%}
+<div class="ltabs-products-loader"><img class="img-responsive" src="{{ "icon-loadings.svg" | asset_url }}" alt="loading" /></div>
+<div class="swiper-container swiper-tab-{{ block.id }}"  data-items="{{ column1 }}" data-margin="{{ margin }}" data-row="{{ row }}" data-md="{{ column3 }}" data-sm="{{ column4 }}" data-xs="{{ column5 }}">
+    <div class="swiper-wrapper">
+
+    {% paginate collection.products %}
+    {% for product in collection.products limit: limit %}
+    <div class="swiper-slide">
+      {% include 'product-grid-item' %}
+    </div>
+   
+    {% endfor %}
+    
+    {% endpaginate %}
+  </div>    
+</div>
+
+
+{%- endcapture -%}
+
+{{min_html | strip_newlines | remove: "  "}} 

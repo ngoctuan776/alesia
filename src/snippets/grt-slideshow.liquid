@@ -1,0 +1,31 @@
+<div class="load-slideshow" style="display: none;">
+  {% section 'slideshow-item-1' %}
+  {% section 'slideshow-item-2' %}
+  {% section 'slideshow-item-3' %}
+  {% section 'slideshow-item-4' %} 
+  {% section 'slideshow-item-5' %}
+</div>
+
+<div data-delay="{{ settings.slideshow_delay }}" data-width="{{ settings.slideshow_width }}" data-height="{{ settings.slideshow_height }}" class="{{ settings.slide_arrow }} main-slider">
+  {% unless settings.slideshow_fullwidth %}
+  <div class="container">
+    {% endunless  %}
+
+    {% capture scontent %}
+
+    {% endcapture %}
+
+    <div class="fullwidthbanner-container">
+      <div id="rev_slider" class="rev_slider fullwidthabanner {{ settings.slide_arrow }}">
+        <ul>
+          
+     
+        </ul>
+      </div>
+    </div>
+    {% unless settings.slideshow_fullwidth %}
+  </div>
+  {% endunless %}
+</div>
+
+

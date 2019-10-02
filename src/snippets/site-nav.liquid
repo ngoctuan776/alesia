@@ -1,0 +1,123 @@
+{% if site-nav == 'mobile' %}
+<ul class="mob-nav">
+  {% for link in linklists[settings.main_nav].links %}
+  {% assign child_list_handle = link.title | handleize %}
+
+  {% if linklists[child_list_handle].links != blank %}
+  <li class="level-0 menu-item use-{{link.title | handle}} toggle-menu{% if link.active %} active{% endif %}" aria-haspopup="true">
+    <a href="{{ link.url }}" class="level-0">
+      {{ link.title }}<span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
+    </a>
+    <ul class="sub-menu level-1">
+      {% for childlink in linklists[child_list_handle].links %}
+      {% assign child2_list_handle = childlink.title | handleize %}      
+      {% if linklists[child2_list_handle].links != blank %}
+
+      <li class="level-1 menu-item toggle-menu {% if childlink.active %} active{% endif %}">
+        <a href="{{ childlink.url }}" >{{ childlink.title }}<span class="caret"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>              
+        <ul class="sub-menu level-2">
+          {% for childlink2 in linklists[child2_list_handle].links %}
+          
+          {% assign child3_list_handle = childlink2.title | handleize %}     
+          {% if linklists[child3_list_handle].links != blank %}
+          
+          <li class="level-2 menu-item toggle-menu {% if childlink2.active %} active{% endif %}">
+            <a href="{{ childlink2.url }}" >{{ childlink2.title }}<span class="caret"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>              
+          	<ul class="sub-menu level-3">
+              {% for childlink3 in linklists[child3_list_handle].links %}
+              <li{% if childlink3.active %} class="active"{% endif %}>  
+            <a href="{{ childlink3.url }}">{{ childlink3.title }}</a>
+          </li>
+              {% endfor %}
+            </ul>
+          </li>
+          
+          {% else %}         
+          
+          <li{% if childlink2.active %} class="active"{% endif %}>  
+            <a href="{{ childlink2.url }}">{{ childlink2.title }}</a>
+          </li>
+          {% endif %}
+          
+          {% endfor %}
+        </ul>            
+      </li>
+      {% else %}
+      <li{% if childlink.active %} class="active"{% endif %}>
+        <a href="{{ childlink.url }}">{{ childlink.title }}</a>              
+      </li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </li>
+  {% else %}
+  <li class="level-0 menu-item use-{{link.title | handle}} {% if link.active %}active {% endif %}">
+    <a href="{{ link.url }}" class="level-0">{{ link.title }}</a>   
+  </li>
+  {% endif %}
+
+
+  {% endfor %} 
+</ul>
+{% else %}
+<ul class="main-nav">
+  {% for link in linklists[settings.main_nav].links %}
+  {% assign child_list_handle = link.title | handleize %}
+
+  {% if linklists[child_list_handle].links != blank %}
+  <li class="level-0 menu-item use-{{link.title | handle}} dropdown{% if link.active %} active{% endif %}" aria-haspopup="true">
+    <a href="{{ link.url }}" class="level-0">
+      {{ link.title }}<span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
+    </a>
+    <ul class="sub-menu level-1">
+      {% for childlink in linklists[child_list_handle].links %}
+      {% assign child2_list_handle = childlink.title | handleize %}      
+      {% if linklists[child2_list_handle].links != blank %}
+
+      <li class="level-1 menu-item dropdown {% if childlink.active %} active{% endif %}">
+        <a href="{{ childlink.url }}" >{{ childlink.title }}<span class="caret"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>              
+        <ul class="sub-menu level-2">
+          {% for childlink2 in linklists[child2_list_handle].links %}
+          
+          {% assign child3_list_handle = childlink2.title | handleize %}     
+          {% if linklists[child3_list_handle].links != blank %}
+          
+          <li class="level-2 menu-item dropdown {% if childlink2.active %} active{% endif %}">
+            <a href="{{ childlink2.url }}" >{{ childlink2.title }}<span class="caret"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>              
+          	<ul class="sub-menu level-3">
+              {% for childlink3 in linklists[child3_list_handle].links %}
+              <li{% if childlink3.active %} class="active"{% endif %}>  
+            <a href="{{ childlink3.url }}">{{ childlink3.title }}</a>
+          </li>
+              {% endfor %}
+            </ul>
+          </li>
+          
+          {% else %}         
+          
+          <li{% if childlink2.active %} class="active"{% endif %}>  
+            <a href="{{ childlink2.url }}">{{ childlink2.title }}</a>
+          </li>
+          {% endif %}
+          
+          {% endfor %}
+        </ul>            
+      </li>
+      {% else %}
+      <li{% if childlink.active %} class="active"{% endif %}>
+        <a href="{{ childlink.url }}" >{{ childlink.title }}</a>              
+      </li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </li>
+  {% else %}
+  <li class="level-0 menu-item use-{{link.title | handle}} {% if link.active %}active {% endif %}">
+    <a href="{{ link.url }}" class="level-0">{{ link.title }}</a>   
+  </li>
+  {% endif %}
+
+
+  {% endfor %} 
+</ul>
+{% endif %}

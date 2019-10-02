@@ -1,0 +1,79 @@
+{% if section.settings.enable %}
+<div class="empty-box d-none d-xl-block" style="height: 60px;">&nbsp;</div>
+<div class="empty-box d-none d-xl-none d-md-block" style="height: 40px;">&nbsp;</div>
+<div class="empty-box d-md-none d-xl-none" style="height: 30px;">&nbsp;</div>
+
+<div class="widget-connect-2">
+  <div class="container"> 
+    <div class="inner" style="background-color: {{ section.settings.newsletter_bgColor }};">		
+      <div class="widget widget-newLetter-custom ">
+        <div class="widget-title text-center">
+          <h3><span>{{ section.settings.newsletter_title }}</span></h3>
+          <p>{{ section.settings.newsletter_subtitle }}</p>
+        </div>
+        <div class="widget-content">   	
+          {% if settings.newsletter_form_action != blank %}
+          {% assign form_action = settings.newsletter_form_action %}
+          {% else %}
+          {% assign form_action = '#' %}
+          {% endif %}
+
+          <form target="_blank" class="input-group" name="mc-embedded-subscribe-form" id="mc-embedded-subscribe-form" method="post" action="{{ form_action }}">
+
+            <input class="input-group-field" type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="EMAIL" id="mail" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" >
+            <span class="input-group-btn">
+              <input type="submit" value="Subscribe" id="subscribe" name="subscribe" class="btn btn-primary" >
+            </span>
+          </form>
+          
+          <div class="subscribe-success">
+          	{{'general.newsletter_form.success_message' | t}}
+          </div>
+
+          <div class="subscribe-result">
+          </div>
+        </div>
+      </div>
+    </div>		
+  </div>
+</div>
+
+{% endif %}
+
+{% schema %}
+{
+"name": "Newsletter",
+"settings": [
+{
+"type": "checkbox",
+"id": "enable",
+"label": "Enable",
+"default": true
+},
+{
+"type": "text",
+"id": "newsletter_title",
+"label": "Title",
+"default": "GET THE LATEST FROM SIMOLUX STORE"
+},
+{
+"type": "text",
+"id": "newsletter_subtitle",
+"label": "SubTitle",
+"default": "Sign up for newsletter"
+},
+{
+"type": "color",
+"id": "newsletter_bgColor",
+"label": "Background color",
+"default": "#ebe2dd"
+}
+]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

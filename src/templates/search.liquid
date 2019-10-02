@@ -1,0 +1,37 @@
+{% paginate search.results by 10 %}
+
+<div class="container">
+  {% if search.results_count == 0 or search.performed == false %}
+  <div class="empty-page-content">
+    <h1 class="h2 page-title">{{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}</h1>
+    {% else %}
+    <div class="section-header">
+      <h1 class="h2 page-title">{{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}</h1>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if search.performed %}
+  {% if search.results_count > 0 %}
+
+  {% endif %}
+  <div class="container">
+    <div class="row">
+      {% for item in search.results %}
+
+      {% if item.object_type == 'product' %}
+      <div class="col-md-3 col-sm-4 col-6">
+      {% include 'product-grid-item', product: item %}  
+      </div>
+      {% endif %}
+
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if paginate.pages > 1 %}
+  {% include 'pagination' %}
+  {% endif %}
+  {% endif %}
+
+  {% endpaginate %}

@@ -1,0 +1,189 @@
+{% include 'blog_default' %}
+
+{% schema %}
+{
+  "name": "Blog pages",
+  "settings": [
+	{
+      "type": "select",
+      "id": "blog_layout",
+      "label": "Page layout",
+      "default": "1col",
+      "options": [
+        {
+          "value": "1col",
+          "label": "Default 1 column"
+        },
+        {
+          "value": "left",
+          "label": "2 Columns left"
+        },
+        {
+          "value": "right",
+          "label": "2 Columns right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "View mode",
+      "default": "list",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "list",
+          "label": "List"
+        }
+      ]
+    },
+
+{
+"type": "select",
+"id": "grid",
+"label": "Products per row (grid only)",
+"default": "4",
+"options": [
+{
+"value": "2",
+"label": "2"
+},
+{
+"value": "3",
+"label": "3"
+},
+{
+"value": "4",
+"label": "4"
+},
+{
+"value": "5",
+"label": "5"
+}
+]
+},
+	{
+      "type": "header",
+      "content": "Blog Tags"
+    },
+    {
+      "type": "checkbox",
+      "id": "tags_enable",
+      "label": "Enable blog tags"
+    },
+	{
+      "type": "text",
+      "id": "tags_title",
+      "label": "Tags title",
+      "default": "Tags"
+    },
+	{
+      "type": "header",
+      "content": "Blog latest"
+    },
+    {
+      "type": "checkbox",
+      "id": "bl_enable",
+      "label": "Enable blog latest"
+    },
+	{
+      "type": "checkbox",
+      "id": "bl_img_show",
+      "label": "Show image"
+    },
+	{
+      "type": "text",
+      "id": "bl_title",
+      "label": "Title",
+      "default": "Latest posts"
+    },
+	{
+      "type": "header",
+      "content": "Instagram"
+    },
+    {
+      "type": "checkbox",
+      "id": "ins_enable",
+      "label": "Enable Instagram"
+    },
+    {
+      "type": "text",
+      "id": "ins_title",
+      "label": "Title",
+      "default": "@SIMOLUX"
+    },
+    {
+      "type": "select",
+      "id": "ins_get",
+      "label": "Get Image from",
+      "options": [
+        {
+          "value": "user",
+          "label": "User"
+        }
+      ],
+      "default": "user"
+      },
+   
+    {
+      "type": "text",
+      "id": "ins_accessToken",
+      "label": "Access Token",
+      "default": "2339519673.1677ed0.70eb7d1a78bc4f7aae5a4da972dfe00c",
+      "info": "[Where do I find Access Token?](http:\/\/instagram.pixelunion.net)"
+    },
+    {
+      "type": "text",
+      "id": "ins_user-id",
+      "label": "User Id",
+      "default": "2339519673",
+      "info": "USER_ID is simply the first few numbers before the dot in your Access Token"
+    },
+    {
+      "type": "text",
+      "id": "ins_limit",
+      "label": "Limit the number of images to show",
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "ins_resolution_images",
+      "label": "Resolution of images",
+      "options": [
+      	{
+        "value": "thumbnail",
+        "label": "Thumbnail"
+        },
+        {
+        "value": "low_resolution",
+        "label": "Low Resolution"
+        },
+        {
+        "value": "standard_resolution",
+        "label": "Standard Resolution"
+        }
+      ],
+      "default": "standard_resolution"
+    },
+	{
+      "type": "checkbox",
+      "id": "custom_banner",
+      "label": "Enable custom banner"
+    },
+	{
+      "type": "url",
+      "id": "banner_link",
+      "label": "banner link"
+    },
+	{
+        "type": "image_picker",
+        "id": "siderbar_img",
+        "label": "Banner"
+     }
+
+  ]
+}
+{% endschema %}

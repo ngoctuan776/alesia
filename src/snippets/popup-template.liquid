@@ -1,0 +1,520 @@
+<div class="theme-popup">
+
+  <div class="fpu-bg">&nbsp;</div>
+
+  <!-- LOADING ================================================= -->
+  <!-- ========================================================= -->
+  <div class="fpu fpu-box v-black fpu-loading">
+    <div class="fpu-content">
+      <div class="container text-center">
+        <div class="fpu-inner no-background text-center">
+          <div class="loader" title="2">
+            <svg width="44" height="44" viewBox="0 0 44 44" stroke="#df8f90">
+              <g fill="none" fill-rule="evenodd" stroke-width="2">
+                <circle cx="22" cy="22" r="1">
+                  <animate attributeName="r"
+                           begin="0s" dur="1.8s"
+                           values="1; 20"
+                           calcMode="spline"
+                           keyTimes="0; 1"
+                           keySplines="0.165, 0.84, 0.44, 1"
+                           repeatCount="indefinite" />
+                  <animate attributeName="stroke-opacity"
+                           begin="0s" dur="1.8s"
+                           values="1; 0"
+                           calcMode="spline"
+                           keyTimes="0; 1"
+                           keySplines="0.3, 0.61, 0.355, 1"
+                           repeatCount="indefinite" />
+                </circle>
+                <circle cx="22" cy="22" r="1">
+                  <animate attributeName="r"
+                           begin="-0.9s" dur="1.8s"
+                           values="1; 20"
+                           calcMode="spline"
+                           keyTimes="0; 1"
+                           keySplines="0.165, 0.84, 0.44, 1"
+                           repeatCount="indefinite" />
+                  <animate attributeName="stroke-opacity"
+                           begin="-0.9s" dur="1.8s"
+                           values="1; 0"
+                           calcMode="spline"
+                           keyTimes="0; 1"
+                           keySplines="0.3, 0.61, 0.355, 1"
+                           repeatCount="indefinite" />
+                </circle>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+  <!-- SEARCH ================================================== -->
+  <!-- ========================================================= -->
+  <div class="fpu fpu-search">    
+    <a class="l-fpu-close" href="#" title="">{% include 'icon-close' %}</a>	
+    <div class="fpu-content">
+      <div class="container">
+        <form action="/search" method="get" class="search-header search input-group" role="search">
+          <input required class="input-group-field"
+                 type="search"
+                 name="q"
+                 placeholder="{{ 'general.search.placeholder' | t }}"
+                 aria-label="{{ 'general.search.placeholder' | t }}">
+          <span class="input-group-btn">
+            <button type="submit">
+              {% include 'icon-search' %}            
+            </button>
+          </span>
+        </form>
+      </div>
+
+    </div>
+
+  </div> 
+
+  <!-- NEWLETTER POPUP ========================================= -->
+  <!-- ========================================================= -->
+  {% if template contains 'index' and settings.popupNewLetter %}
+  <script>
+    jQuery(document).ready(function(){
+
+      var time = {{ settings.newsletterP_delay }};
+      $.wait = function(duration, completeCallback, target) {
+        $target = $(target || '<queue />');
+        return $target.delay(duration).queue(function(next){completeCallback.call($target); next();});
+      };
+
+      $.fn.wait = function(duration, completeCallback) {
+        return $.wait.call(this, duration, completeCallback, this);
+      };
+      
+      if (jQuery.cookie('newletter-popupx') != 'closed') {
+        $.wait(time, function() {
+          gred.showPopup('.fpu-newletter');
+        });
+      }; 
+
+
+      $('.show-again').click(function() {   
+        if (!$(this).is(':checked')) {        
+          jQuery.cookie('newletter-popupx', 'closed', {expires: 0, path:'/'});
+        } else{ 
+          jQuery.cookie('newletter-popupx', 'closed', {expires: 100, path:'/'});
+        }
+      });
+    });
+  </script> 
+
+  <div class="fpu fpu-box fpu-newletter">    
+    
+    <div class="fpu-content">
+      <div class="container text-center">
+        <div class="fpu-inner">
+          <a class="l-fpu-close" href="#" title="">{% include 'icon-close' %}</a>	
+          <div class="new-letter">
+            <div class="flexbox">
+              <div class="text-center info">
+                {% if settings.newsletter_form_action != blank %}
+                <form action="{{ settings.newsletter_form_action }}" method="post" id="mc-embedded-subscribe-form1" name="mc-embedded-subscribe-form" target="_blank">
+                  <h2 class="title">{{settings.newsletterP_title}}</h2>      
+                  <p class="sub-title">{{settings.newsletterP_subtitle}}</p>
+
+                  <div class="input-group">
+                    <input class="input-group-field email" type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="EMAIL" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" >
+                    <span class="input-group-btn">
+                      <input type="submit" class="btn btn-primary subscribe" name="subscribe" value="{{ 'general.newsletter_form.submit' | t }}">
+                    </span>
+                  </div>
+
+                  <div class="notshow">
+                    <input type="checkbox" class="show-again" name="show-again">{{ settings.newsletterP_dontshow }}
+                  </div>
+                </form>  
+
+                <div class="subscribe-success">
+                  {{'general.newsletter_form.success_message' | t}}
+                </div>
+
+                <div class="subscribe-result">
+                </div>
+                
+                
+                {% else %}
+                {% form 'customer' %}
+
+                <h2 class="title">{{settings.newsletterP_title}}</h2>    
+                <p class="sub-title">{{settings.newsletterP_subtitle}}</p>
+
+                {% if form.posted_successfully? %}
+                <p class="note form-success">{{ 'general.newsletter_form.confirmation' | t }}</p>     
+                <script>
+                  jQuery.cookie('popupNewletter', 'closed', {expires: 100, path:'/'});
+                </script> 
+                {% else %}
+                <input required type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="contact[email]" id="Email" class="input-group-field" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" >
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                <input type="submit" class="btn btn-primary btn-sm subscribe" name="subscribe" value="{{ 'general.newsletter_form.submit' | t }}">
+                {% endif %}
+                {{ form.errors | default_errors }}
+                <div class="notshow">
+                  <input type="checkbox" class="show-again" name="show-again">{{settings.newsletterP_dontshow}}
+                </div>
+                {% endform %}
+                {% endif %}
+              </div>
+            </div>
+          </div> 
+        </div>
+      </div>
+
+    </div>
+
+  </div> 
+  {% endif %}
+
+  <!-- QUICKVIEW =============================================== -->
+  <!-- ========================================================= -->
+
+  {% if settings.product_quickview %}
+
+  {% assign pp_grid = settings.pp_grid %}
+  {% case pp_grid %}
+  {% when '2' %}
+  {% assign g_col_left = 'col-md-3 col-sm-5 col-12' %}
+  {% assign g_col_right = 'col-md-9 col-sm-7 col-12' %}
+
+  {% when '3' %}
+  {% assign g_col_left = 'col-md-4 col-sm-5 col-12' %}
+  {% assign g_col_right = 'col-md-8 col-sm-7 col-12' %}
+
+  {% when '4' %}
+  {% assign g_col_left = 'col-md-5 col-sm-6 col-12' %}
+  {% assign g_col_right = 'col-md-7 col-sm-6 col-12' %}
+
+  {% when '5' %}
+  {% assign g_col_left = 'col-md-6 col-sm-6 col-12' %}
+  {% assign g_col_right = 'col-md-6 col-sm-6 col-12' %}
+
+  {% when '6' %}
+  {% assign g_col_left = 'col-md-7 col-sm-6 col-12' %}
+  {% assign g_col_right = 'col-md-5 col-sm-6 col-12' %}
+
+  {% when '7' %}
+  {% assign g_col_left = 'col-md-8 col-sm-7 col-12' %}
+  {% assign g_col_right = 'col-md-4 col-sm-5 col-12' %}
+
+  {% when '8' %}
+  {% assign g_col_left = 'col-md-9 col-sm-7 col-12' %}
+  {% assign g_col_right = 'col-md-3 col-sm-5 col-12' %}
+
+  {% else %}
+  {% assign g_col_left = 'col-md-6 col-sm-6 col-12' %}
+  {% assign g_col_right = 'col-md-6 col-sm-6 col-12' %}
+  {% endcase %}
+
+  {% assign direction = "horizontal" %}
+  {% if settings.pt_position contains "left" or settings.pt_position contains "right" %}
+  {% assign direction = "vertical" %}
+  {% endif %}
+
+  {% assign review = settings.product_review %}
+
+  <div class="quickview-product fpu fpu-box fpu-quickview v-black"></div>
+  <div id="quickview-template" class="hidden">
+
+    <div class="fpu-content d-none d-sm-none d-md-table-cell">
+      <div class="container text-center">
+        <div class="fpu-inner">
+          <div class="content product-single product-single-v1  {% if settings.product_layout == "1col_fw" %}product-fullwidth{% elsif settings.product_layout == "1col" %}one-col{% else %}two-col {% endif %} ">
+            <div class="row">
+              <div class="{{ g_col_left }}">
+                <div class="product-media thumbnais-{{ settings.pt_position }}">
+                  <div class="featured-image product-single-photos"></div>
+
+                  {% if settings.pt_carousel %}
+                  {% else %}
+                  {% endif %}
+                  <div class="swiper-container more-views" data-direction="{{direction}}" data-margin="14" data-items="{{pt_item}}" data-xs-items="4">
+                    <div class="swiper-wrapper">
+                    </div>  
+
+                    <div class="swiper-button-prev"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>
+                    <div class="swiper-button-next"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
+                  </div>
+                </div>
+              </div> 
+
+              <div class="{{ g_col_right }} disflex info-box">
+                <div class="product-shop product-info-main">
+                  <div class="products-item product-info">
+                    <h3 class="product-name"><a>&nbsp;</a></h3>
+                    {% if review %}
+                    <div class="review custom-reviews">
+                      <span class="spr-badge">
+                        <span class="spr-starrating spr-badge-starrating">
+                          <i style="" class="spr-icon spr-icon-star-empty"></i>
+                          <i style="" class="spr-icon spr-icon-star-empty"></i>
+                          <i style="" class="spr-icon spr-icon-star-empty"></i>
+                          <i style="" class="spr-icon spr-icon-star-empty"></i>
+                          <i style="" class="spr-icon spr-icon-star-empty"></i>
+                        </span>
+                        <span class="spr-starrating spr-badge-starrating spr-active">
+                          <i style="" class="spr-icon spr-icon-star"></i>
+                          <i style="" class="spr-icon spr-icon-star"></i>
+                          <i style="" class="spr-icon spr-icon-star"></i>
+                          <i style="" class="spr-icon spr-icon-star"></i>
+                          <i style="" class="spr-icon spr-icon-star"></i>
+                        </span>
+                      </span>
+                      <span class="spr-badge-caption"></span>
+                    </div>
+                    {% endif %}
+
+                    <span class="available instock"><i class="fa fa-check-square-o"></i>{{ 'products.product.inStock' | t }}</span>          
+                    <span class="available outofstock"><i class="fa fa-check-square-o"></i>{{ 'products.product.outOfStock' | t }}</span>         
+
+                    {% if enable-vendor %}
+                    <span class="vendor product-vendor">{{ 'products.product.vendor' | t }}<span></span></span>
+                    {% endif %}
+
+
+                    <div class="details clearfix">
+                      <form action="/cart/add" method="post" class="variants">           
+                        <div class="prices product-single-prices">                  
+                          <span id="ProductPrice" class="price" itemprop="price">
+                            {{ product.price | money }}
+                          </span>
+
+                          <s id="ComparePrice" class="compare-price product-single-sale price"></s> 
+                        </div>
+
+                        <div class="des product-description rte">
+                          <div class="short-description">
+                            <div>
+                              <ul>
+                                <li><span style="line-height: 1.5;">100% Genuine Buffalo Vintage Wash Leather</span></li>
+                                <li><span style="line-height: 1.5;">100% Cotton Lining</span></li>
+                                <li><span style="line-height: 1.5;">2 front flap buckle pockets</span></li>
+                                <li><span style="line-height: 1.5;">2 side flap buckle pocket</span></li>
+                                <li><span style="line-height: 1.5;">35cm in height, brass metal fittings</span></li>
+                                <li><span style="line-height: 1.5;">Adjustable strap, lightweight, durable leather</span></li>
+                                <li><span style="line-height: 1.5;">Tanned without the use of chemical.</span></li>
+                              </ul>
+                              <ul></ul>
+                            </div>
+                          </div>
+                        </div>    
+                        <div class="product-options {% unless settings.color_swatch %} linked-options{% endunless %}">
+                          <select name='id' style="display:none"></select>
+                          <div class="total-price hidden">                   
+                            <span></span>
+                          </div>
+                        </div>
+                        <div class="product-actions">
+
+                          <div class="product-single-quantity{% unless section.settings.product_quantity_enable %} is-hidden{% endunless %}">
+                            <div class="quantity">
+                              <span class="label hidden">{{ 'products.product.quantity' | t }}</span>
+                             
+                              <div class="qty-box">
+                                
+                                <span class='qtyminus' data-field='quantity'>-</span>
+                                <input type='text' id="Quantityx" data-field='quantity' name='quantity' value='1' disabled class='quantity-selector' />
+                                <span class='qtyplus' data-field='quantity'>+</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="actions btn-action">
+                            <button type="button" class="btn btn-addToCart btn-primary float-none">{{ 'products.product.add_to_cart' | t }}</button>                  
+                          </div>
+                        </div>
+
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div> 
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <script>  
+    Shopify.doNotTriggerClickOnThumb = false; 
+    var selectCallbackQuickview = function(variant, selector) {
+
+
+      var productItem = jQuery('.quickview-product .products-item');
+      addToCart = productItem.find('.btn-addTocart'),
+        productPrice = productItem.find('.price'),
+        comparePrice = productItem.find('.compare-price'),
+        totalPrice = productItem.find('.total-price span');           
+
+      if (variant) {
+        if (variant.available) {           
+          addToCart.removeClass('disabled').removeAttr('disabled').text('{{ 'products.product.add_to_cart' | t }}');
+                                                                        } else {
+                                                                        addToCart.val('sold_out').addClass('disabled').attr('disabled', 'disabled');
+        }
+
+
+        productPrice.html( Shopify.formatMoney(variant.price, '{{ shop.money_format }}'));
+                                               variant_price = $('#Quantity').val() * variant.price;
+                          totalPrice.html( Shopify.formatMoney(variant_price, '{{ shop.money_format }}') );
+
+                          if (window.show_multiple_currencies) {       
+          Currency.convertAll(window.shop_currency, jQuery('.currency-picker').val(),'.quickview-product .prices .price .money', '{{settings.currency_format}}');   
+                              Currency.convertAll(window.shop_currency, jQuery('.currency-picker').val(),'.quickview-product .total-price .money', '{{settings.currency_format}}');
+        };
+
+        if ( variant.compare_at_price > variant.price ) {
+          comparePrice.html(Shopify.formatMoney(variant.compare_at_price, '{{ shop.money_format }}')).show();
+                                                productPrice.addClass('on-sale');
+                            } else {
+                            comparePrice.hide();
+          productPrice.removeClass('on-sale');
+        }
+
+        var form = jQuery('#' + selector.domIdPrefix).closest('form');
+        for (var i=0,length=variant.options.length; i<length; i++) {
+          var radioButton = form.find('.swatch[data-option-index="' + i + '"] :radio[value="' + variant.options[i] +'"]');
+          if (radioButton.size()) {
+            radioButton.get(0).checked = true;
+          }
+        }
+
+        var inventoryInfo = productItem.find('.product-inventory span');
+        if (variant.available) {
+          if (variant.inventory_management!=null) {
+            inventoryInfo.text(variant.inventory_quantity + " " + 'in_stock');
+          } else {
+            inventoryInfo.text('many_in_stock');
+          }
+        } else {
+          inventoryInfo.text('out_of_stock');
+        }
+
+        var regex = /([0-9]+[.|,][0-9]+[.|,][0-9]+)/g;
+        var unitPriceTextMatch = jQuery('.quick-view .price').text().match(regex);
+
+        if (!unitPriceTextMatch) {
+          regex = /([0-9]+[.|,][0-9]+)/g;
+          unitPriceTextMatch = jQuery('.quick-view .price').text().match(regex);     
+        }
+
+        if (unitPriceTextMatch) {
+          var unitPriceText = unitPriceTextMatch[0];     
+          var unitPrice = unitPriceText.replace(/[.|,]/g,'');
+          var quantity = parseInt(jQuery('.quick-view input[name=quantity]').val());
+          var totalPrice = unitPrice * quantity;
+
+          var totalPriceText = Shopify.formatMoney(totalPrice, window.money_format);
+          regex = /([0-9]+[.|,][0-9]+[.|,][0-9]+)/g;     
+          if (!totalPriceText.match(regex)) {
+            regex = /([0-9]+[.|,][0-9]+)/g;
+          } 
+          totalPriceText = totalPriceText.match(regex)[0];
+
+          var regInput = new RegExp(unitPriceText, "g"); 
+          var totalPriceHtml = jQuery('.quick-view .price').html().replace(regInput ,totalPriceText);
+          jQuery('.quick-view .total-price span').html(totalPriceHtml);     
+
+        }
+
+        if (variant && variant.featured_image) {
+          var newImage = Shopify.resizeImage(variant.featured_image.src, 'small');
+          newImage = newImage.replace(/https?:/,'');
+          jQuery('.quick-view .quickview-more-views img').each(function() {
+            var grandSize = jQuery(this).attr('src');
+            if (grandSize == newImage) {
+              jQuery(this).parent().trigger('click');              
+              return false;
+            }
+          });
+        }
+
+      } else {
+        addToCart.text('unavailable').addClass('disabled').attr('disabled', 'disabled');
+      }
+
+    };
+  </script>
+  {% endif %}
+
+
+  <!-- ADD TO CART =============================================== -->
+  <!-- ========================================================= -->
+
+  <div class="fpu fpu-box v-black fpu-addtocart">    
+    <a class="l-fpu-close" href="#" title="">{% include 'icon-close' %}</a>	
+    <div class="fpu-content">
+      <div class="container text-center">
+        <div class="fpu-inner">
+          <div class="product-image">
+            <img alt="" src="{{ 'ajax-loader.gif' | asset_url }}" style="max-width:100px; height:auto"/>
+          </div>
+          <div class="product-info">
+            <p class="product-name"></p>
+            <p class="success-message btn-cart">{{ 'products.product.cart_success_text' | t }}</p>
+            <div class="actions">    
+              <button class="btn btn-sm btn-primary btn-cart btn-pr" onclick="window.location='/cart'">{{'cart.general.goto_cart' | t }}</button>
+              <button class="btn  btn-sm btn-checkout btn-second" onclick="window.location='/checkout'">{{'cart.general.goto_checkout' | t }}</button>        
+            </div>        
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ERROR POPUP ============================================= -->
+  <!-- ========================================================= -->
+
+  <div class="fpu fpu-box v-black fpu-error">    
+    <a class="l-fpu-close" href="#" title="">{% include 'icon-close' %}</a>	
+    <div class="fpu-content">
+      <div class="container text-center">
+        <div class="fpu-inner">
+          <div class="error-message"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD TO WISHLIST =============================================== -->
+  <!-- ========================================================= -->
+
+  <div class="fpu fpu-box v-black fpu-addtowishlist">    
+    <a class="l-fpu-close" href="#" title="">{% include 'icon-close' %}</a>	
+    <div class="fpu-content">
+      <div class="container text-center">
+        <div class="fpu-inner">
+          <div class="product-image">
+            <img alt="" src="{{ 'ajax-loader.gif' | asset_url }}" style="max-width:90px; height:auto"/>
+          </div>
+          <div class="product-info">
+            <p class="product-name"></p>
+            <p class="success-message btn-cart">{{ 'products.product.wishlist_success_text' | t }}</p>
+            <div class="actions">    
+              <button class="btn btn-sm btn-primary btn-cart btn-pr" onclick="window.location='/pages/wish-list'">{{'cart.general.goto_wishlist' | t }}</button>        
+            </div>        
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+</div>

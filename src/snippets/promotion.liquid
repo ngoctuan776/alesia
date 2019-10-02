@@ -1,0 +1,13 @@
+{% if settings.pr_text != '' %}
+{% capture tStyle %}
+{% if settings.pr_height != '' %}line-height: {{ settings.pr_height }};{% endif %}
+{% if settings.pr_bgColor != '' %}background-color: {{ settings.pr_bgColor }};{% endif %}
+{% if settings.pr_textColor != '' %}color: {{ settings.pr_textColor }};{% endif %}
+{% endcapture %} 
+
+<div class="promotion hidden-sm hidden-xs" style="{{tStyle}}">
+  <div class="container text-center">
+    {{ settings.pr_text }}
+  </div>
+</div>
+{% endif %}

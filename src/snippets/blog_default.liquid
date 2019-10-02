@@ -1,0 +1,193 @@
+{%- assign products_per_row = section.settings.grid -%}
+{% case products_per_row %}
+{% when '2' %}
+
+{% assign grid = 'col-md-6 col-sm-6 col-6' %}
+{% when '3' %}
+
+{% assign grid = 'col-md-4 col-sm-4 col-6' %}
+{% when '4' %}
+
+{% assign grid = 'col-md-3 col-sm-4 col-6 ' %}
+{% when '5' %}
+
+{% assign grid = 'col-lg-2 col-sm-3 col-md-3 col-6' %}
+{% endcase %}
+{% paginate blog.articles by 16 %}
+
+<h1 class="hidden">{{ page_title }}</h1>
+<div class="blog-default">
+  <div class="container">
+
+    {% if section.settings.blog_layout != '1col' %}
+    <div class="row">
+      {% if section.settings.blog_layout == 'left' %}
+      <div class="col-lg-3 sidebar-offcanvas">
+        {% include 'blog-sidebar' %} 
+      </div>
+      <div class="sidebar-overlay"  ></div>
+      {% endif %}
+
+      <div class="col-12 col-lg-9">
+        <a href="javascript:void(0)" class="open-sidebar d-inline-block d-lg-none"><i class="fa fa-bars"></i> {{ 'general.sidebar.text' | t }}</a>
+        {% endif %}
+
+
+        <div class="{% if section.settings.layout == 'list' %}blog--list-view{% else %}blog--grid-view{% endif %}">
+          {% if section.settings.layout == 'grid' %}
+
+          <div class="row">
+            {% for article in blog.articles %}
+            <div class="{{grid}}">
+              <div class="article blog-item blog-grid-item">
+                <div class="article-image">
+
+                  {% capture tags %}{{article.tags}}{% endcapture%}
+                  {% if tags contains 'style' %}
+                  <div class="fancy-categories">
+                    <span>Style</span>
+                  </div>
+                  {% else %}
+                  {% if tags contains 'fashion' %}
+                  <div class="fancy-categories">
+                    <span>Fashion</span>
+                  </div>
+                  {% else %}
+                  {% if tags contains 'electronic' %}
+                  <div class="fancy-categories">
+                    <span>Electronic</span>
+                  </div>
+                  {% endif %}
+                  {% endif %}
+                  {% endif %}
+                  <a title="{{ article.url }}" href="{{ article.url }}">
+                    <img alt="{{ article.url }}" src="{{ article.image.src | img_url: 'master' }}">
+                  </a>
+                  
+                </div>
+                <div class="article-info">
+                  <div class="article-inner">
+                    <div class="blog-excerpt fx">
+                    <span class="entry-month">{{ article.created_at | date: "%B" }}</span>
+                    <span class="entry-date updated">{{ article.created_at | date: "%d" }} , </span>
+                    <span class="entry-year">{{ article.created_at | date: "%Y" }}</span>
+                  </div> 
+                    <h3><a href="{{ article.url }}" title="{{ article.title }}">{{ article.title }}</a></h3>
+					<div class="article-meta">
+                      <span class="meta-author">{{ 'blogs.article.posted_by' | t }} <span class="name_author">{{ article.author }}</span></span>
+                      <span><a href="{{ article.url }}#Comments">
+                        <i class="fa fa-comment"></i> {{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}
+                        </a>
+                      </span>
+                    </div>
+                    <div class="rte dess">
+                      {% if article.excerpt.size > 0 %}
+                      {{ article.excerpt }}
+                      {% else %}
+                      {{ article.content | strip_html | truncate: 80 }}
+                      {% endif %}
+                    </div>
+   
+                    <a class="readmore" href="{{ article.url }}" title="">{{ 'blogs.article.read_more' | t }}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          {% for article in blog.articles %}
+
+          <div class="article blog-item blog-list-item">
+
+            <div class="article-image">
+
+              {% capture tags %}{{article.tags}}{% endcapture%}
+              {% if tags contains 'style' %}
+              <div class="fancy-categories">
+                <span>Style</span>
+              </div>
+              {% else %}
+              {% if tags contains 'fashion' %}
+              <div class="fancy-categories">
+                <span>Fashion</span>
+              </div>
+              {% else %}
+              {% if tags contains 'electronic' %}
+              <div class="fancy-categories">
+                <span>Electronic</span>
+              </div>
+              {% endif %}
+              {% endif %}
+              {% endif %}
+              <a title="{{ article.url }}" href="{{ article.url }}">
+                <img alt="{{ article.url }}" src="{{ article.image.src | img_url: 'master' }}">
+              </a>
+            
+            </div>
+
+
+            <div class="article-info ">
+             <div class="blog-excerpt fx">
+                  <span class="entry-date updated">{{ article.created_at | date: "%d" }}</span>
+                  <span class="entry-month">{{ article.created_at | date: "%B" }}</span>
+                  <span class="entry-year">{{ article.created_at | date: "%Y" }}</span>
+                </div> 
+              <h3><a href="{{ article.url }}" title="{{ article.title }}">{{ article.title }}</a></h3>
+
+              <div class="article-meta">
+                <span class="meta-author">{{ 'blogs.article.posted_by' | t }} <span class="name_author">{{ article.author }}</span></span>
+                <span><a href="{{ article.url }}#Comments">
+                  <i class="fa fa-comment"></i> {{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}
+                  </a>
+                </span>
+              </div>
+              <div class="rte des">
+                {% if article.excerpt.size > 0 %}
+                {{ article.excerpt }}
+                {% else %}
+                {{ article.content | strip_html | truncate: 220 }}
+                {% endif %}
+              </div>
+
+
+              <a class="readmore" href="{{ article.url }}" title="">{{ 'blogs.article.read_more' | t }}</a>
+            </div>
+          </div>
+
+          {% endfor %}
+          {% endif %}
+
+
+        </div>
+        {% if paginate.pages > 1 %}
+        <div class="a-center">
+          {% include 'pagination-custom' %}
+        </div>
+        {% endif %}
+        {% endpaginate %}
+
+
+        {% if section.settings.blog_layout != '1col' %}
+      </div>
+      {% if section.settings.blog_layout == 'right' %}
+      <div class="col-md-3 sidebar-offcanvas">
+        {% include 'blog-sidebar' %} 
+      </div>
+      <div class="sidebar-overlay"  ></div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+
+
+  </div>
+</div>
+
+{% if section.settings.blog_layout != '1col' %}
+<script type="text/javascript">
+
+
+
+</script>
+{% endif %}

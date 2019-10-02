@@ -1,0 +1,124 @@
+<div class="breadcrumb breadcrumb-v1 {% unless item_spaceBottom %}no-margin{% endunless %} {% unless item_showTitle %}disable-title{% endunless %} {% if item_fullwidth %}bfw{% endif %}">
+  {% unless item_fullwidth %}
+  <div class="container">
+    {% endunless %}
+    <div class="breadcrumb-inner">
+
+
+    {% if template contains 'product' %}
+    {% if item_title != blank and item_showTitle %}  
+    <h3 style="color: {{item_textColor}};">{{ item_title }}</h3>
+    {% else %}
+    <h3 style="color: {{item_textColor}};">{{ product.title }}</h3>
+    {% endif %}
+
+    <a href="/" style="color: {{item_linkColor}};" title="{{ 'general.breadcrumbs.home' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+
+    {% if collection.url %}
+    <span class="scr" aria-hidden="true" style="color: {{item_sColor}};"> > </span>
+    <a href="{{collection.url}}" title="" style="color: {{item_linkColor}};">{{collection.title}}</a>  
+    {% endif %}
+
+    <span class="scr" aria-hidden="true" style="color: {{item_sColor}};"> > </span> 
+    {% if item_title != blank and item_showTitle %}  
+    <span style="color: {{item_textColor}};">{{ item_title }}</span>
+    {% else %}
+    <span style="color: {{item_textColor}};">{{ product.title }}</span>
+    {% endif %}
+
+
+    {% elsif template contains 'collection' %} 
+    {% if item_title != blank and item_showTitle %}  
+    <h3 style="color: {{item_textColor}};">{{ item_title }}</h3>
+    {% else %}
+    <h3 style="color: {{item_textColor}};">{{ collection.title }}</h3>
+    {% endif %}
+    <a href="/" style="color: {{item_linkColor}};" title="{{ 'general.breadcrumbs.home' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+
+    {% if current_tags %}   
+      {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+      {{ collection.title | link_to: url }}
+      <span class="scr" aria-hidden="true" style="color: {{item_sColor}};"> > </span>   
+      <span>{{ current_tags | join: " + " }}</span>
+
+      {% if item_title != blank and item_showTitle %}  
+      <span style="color: {{item_textColor}};">{{ collection.title }}</span>
+      {% else %}
+      <span style="color: {{item_textColor}};">{{ collection.title }}</span>
+      {% endif %}
+    
+    {% else %}
+     <span class="scr" aria-hidden="true" style="color: {{item_sColor}};"> > </span>   
+      {% if item_title != blank and item_showTitle %}  
+      <span style="color: {{item_textColor}};">{{ collection.title }}</span>
+      {% else %}
+      <span style="color: {{item_textColor}};">{{ collection.title }}</span>
+      {% endif %}
+    {% endif %}
+
+
+
+    {% elsif template == 'blog' %}  
+    {% if item_title != blank and item_showTitle %}  
+    <h3 style="color: {{item_textColor}};">{{ item_title }}</h3>
+    {% else %}
+    <h3 style="color: {{item_textColor}};">{{ blog.title }}</h3>
+    {% endif %}
+    <a href="/" style="color: {{item_linkColor}};" title="{{ 'general.breadcrumbs.home' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+
+    <span class="scr" aria-hidden="true" style="color: {{item_sColor}};"> > </span>
+    {% if current_tags %}
+    {{ blog.title | link_to: blog.url }}
+    <span class="scr" aria-hidden="true" style="color: {{item_sColor}};"> > </span>   
+    <span style="color: {{item_textColor}};">{{ current_tags | join: " + " }}</span>
+    {% else %}
+    <span style="color: {{item_textColor}};">{{ blog.title }}</span>
+
+    {% endif %}
+
+    {% elsif template == 'article' %}
+    {% if item_title != blank and item_showTitle %}  
+    <h3 style="color: {{item_textColor}};">{{ item_title }}</h3>
+    {% else %}
+    <h3 style="color: {{item_textColor}};">{{ article.title }}</h3>
+    {% endif %}
+
+    <a href="/" style="color: {{item_linkColor}};" title="{{ 'general.breadcrumbs.home' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+
+    <span class="scr" aria-hidden="true" style="color: {{item_sColor}};"> > </span>
+    <a href="{{blog.url}}" title=""  style="color: {{item_linkColor}};">{{blog.title}}</a>  
+    <span class="scr" aria-hidden="true" style="color: {{item_sColor}};"> > </span>
+    
+    
+    {% if item_title != blank and item_showTitle %}  
+    <span style="color: {{item_textColor}};">{{ item_title }}</span>
+    {% else %}
+    <span style="color: {{item_textColor}};">{{ article.title }}</span>
+    {% endif %}
+    
+    
+    {% else %}
+    
+    {% if item_title != blank and item_showTitle %}  
+    <h3 style="color: {{item_textColor}};">{{ item_title }}</h3>
+    {% else %}
+    <h3 style="color: {{item_textColor}};">{{ page_title }}</h3>
+    {% endif %}
+    
+    <a href="/" style="color: {{item_linkColor}};" title="{{ 'general.breadcrumbs.home' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+
+    <span class="scr" aria-hidden="true" style="color: {{item_sColor}};"> > </span>
+    
+    {% if item_title != blank and item_showTitle %}  
+    <span style="color: {{item_textColor}};">{{ item_title }}</span>
+    {% else %}
+    <span style="color: {{item_textColor}};">{{ page_title }}</span>
+    {% endif %}
+    {% endif %}
+
+  </div>
+
+    {% unless item_fullwidth %}
+  </div>
+  {% endunless %}
+</div>

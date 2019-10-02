@@ -1,0 +1,451 @@
+{% assign column = 0 %}
+{% if section.settings.enable %}
+{% assign use = section.settings.parent %}
+{% assign csWidth = section.settings.csWidth %}
+{% assign align = section.settings.align %}
+{% assign position = section.settings.position %}
+
+{% capture posit %}
+{% if section.settings.align == 'left' %}
+left: {{section.settings.position}}px;
+right: auto;
+{% else %}
+right: {{section.settings.position}}px;
+left: auto;
+{% endif %}
+{% endcapture %}
+
+<div class="grt-megamenu-item sub-menu {{ section.settings.class }} {% unless section.settings.enable_mobile %}hidden-mobile{% endunless %}" style="width: {{csWidth}}px; {{posit}}" data-use=".use-{{use | handle}}">
+  
+  <div class="row">
+    {% for block in section.blocks %}
+ 
+    	{% if block.type == 'clear' %}
+    		<div class="w-100"></div>
+    	{% elsif block.type == 'newColumn' %}
+    
+    	  {% assign column = 1 %}
+          <div class="col-{{block.settings.width}}">
+          <div class="row">
+        {% elsif block.type == 'endColumn' %}    
+          {% assign column = 0 %}
+    	  </div>
+    	  </div>
+        {% else %}
+
+		  {% if block.settings.enable %}
+    	
+    	  <div class="col-{{block.settings.width}} {% unless block.settings.enable_mobile %}hidden-mobile{% endunless %}">
+            <div class="{% if block.type == 'empty' %}{% else %}mega-box{% endif %}">
+              {% assign title = block.settings.title %}
+              {% if title != blank %}
+              <h3 class="menu-title">{{title}}</h3>
+              {% endif %}
+
+              {% if block.type == 'navigation' %}
+              {% assign _menu = block.settings.link_list %}
+              <ul class="level-2 child-box mega_navi">
+                {% for link in linklists[_menu].links %}
+                <li {% if link.active %} class="active"{% endif %}><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {% endfor %}
+              </ul>
+              {% elsif block.type == 'image' %}
+              {% assign image = block.settings.image %}
+              {% assign url = block.settings.url %}
+              {% assign message = block.settings.message %}
+
+              {% if url != blank %}
+              <a href="{{url}}" title="" class="mega_image">
+              {% endif %}
+              {% if image != blank %}
+                {{ image | img_url: 'master' | img_tag: '' }}
+                {% else %}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+
+                {% endif %}
+
+              {% if url != blank %}
+              </a>
+              {% endif %}
+
+              {% if message != blank %}
+              <div class="rte">{{message}}</div>
+              {% endif %}
+
+              {% elsif block.type == 'page' %}
+              {% assign page = block.settings.page %}
+              {% if page != blank %}
+              <div class="rte">
+                {{ pages[page].content }}
+              </div>
+              {% endif %}		
+
+              {% elsif block.type == 'product' %}
+              {% assign prod = block.settings.product %}
+              {% if prod != blank %}
+              <div class="mega_product">
+              {% include 'product-megamenu-item' %}
+              </div>
+              {% endif %}
+              
+              {% elsif block.type == 'empty' %}
+				<div class="empty-box" style="height: {{ block.settings.height }}px;">&nbsp;</div>              
+              {% endif %}		
+            </div>
+          </div>    
+    
+    	  {% endif %}
+
+    	{% endif %}    
+
+    {% endfor %}
+    {% if column == 1 %}
+    </div>
+  	</div>
+    {% endif %}
+   
+  </div>
+</div> 
+{% endif %}
+{% schema %}
+  {
+    "name": "GRT - Megamenu 2",
+    "settings": [
+		{
+          "type": "checkbox",
+          "id": "enable",
+          "label": "Enable",
+          "default": true
+        },
+		{
+          "type": "checkbox",
+          "id": "enable_mobile",
+          "label": "Enable on mobile",
+          "default": true
+        },
+		{
+          "type": "text",
+          "id": "parent",
+          "label": "Use for"
+        },	
+		{
+          "type": "text",
+          "id": "csWidth",
+          "label": "Custon width (px)",
+		  "default": "600"
+      	},
+		{
+          "type": "radio",
+          "id": "align",
+          "label": "Align ( not work with full with)",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+        "default": "left"
+        },
+		{
+          "type": "text",
+          "id": "position",
+          "label": "Position (left/right by pixel)",
+          "default": "0"
+        },
+		{
+          "type": "text",
+          "id": "class",
+          "label": "Custom Class",
+		  "default": "custom_mega"
+      	}
+		
+	],
+    "blocks": [
+	  {
+      "type": "newColumn", 
+      "name": "New column",
+      "settings": [
+		{
+          "type": "checkbox",
+          "id": "enable",
+          "label": "Enable",
+          "default": true
+        },		
+        {
+          "type": "select",
+          "id": "width",
+          "options": [
+		  { "value": "1", "label": "8%"},
+          { "value": "2", "label": "16%"},
+			{ "value": "md2", "label": "20%"},
+          { "value": "3", "label": "25%"},
+          { "value": "4", "label": "34%"},
+		  { "value": "5", "label": "42%"},
+		  { "value": "6", "label": "50%"},
+		  { "value": "7", "label": "58%"},
+		  { "value": "8", "label": "66%"},
+		  { "value": "9", "label": "75%"},
+		  { "value": "10", "label": "84%"},
+		  { "value": "11", "label": "92%"},
+		  { "value": "12", "label": "100%"}
+          ],
+		  "default":   "3",
+          "label": "Width"
+        }    
+      ]
+      },
+	  {
+      "type": "endColumn", 
+      "name": "End column",
+      "settings": [
+		{          
+           "type":      "header", 
+           "content":   "End column",
+           "info":      "End a column"          
+        }   
+      ]
+      },
+      {
+      "type": "navigation",
+      "name": "Navigation item",
+      "settings": [
+		{
+          "type": "checkbox",
+          "id": "enable",
+          "label": "Enable",
+          "default": true
+        },
+		{
+          "type": "checkbox",
+          "id": "enable_mobile",
+          "label": "Enable on mobile",
+          "default": true
+        },
+		{
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "options": [
+		  { "value": "1", "label": "8%"},
+          { "value": "2", "label": "16%"},
+          { "value": "3", "label": "25%"},
+          { "value": "4", "label": "34%"},
+		  { "value": "5", "label": "42%"},
+		  { "value": "6", "label": "50%"},
+		  { "value": "7", "label": "58%"},
+		  { "value": "8", "label": "66%"},
+		  { "value": "9", "label": "75%"},
+		  { "value": "10", "label": "84%"},
+		  { "value": "11", "label": "92%"},
+		  { "value": "12", "label": "100%"}
+          ],
+		  "default":   "12",
+          "label": "Width"
+        },
+        {
+          "type": "link_list",
+          "id": "link_list",
+          "label": "Select a menu"
+        }        
+      ]
+      },
+	  {
+      "type": "image",
+      "name": "Image item",
+      "settings": [
+		{
+          "type": "checkbox",
+          "id": "enable",
+          "label": "Enable",
+          "default": true
+        },
+		{
+          "type": "checkbox",
+          "id": "enable_mobile",
+          "label": "Enable on mobile",
+          "default": true
+        },
+		{
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+		{
+          "type": "select",
+          "id": "width",
+          "options": [
+		  { "value": "1", "label": "8%"},
+          { "value": "2", "label": "16%"},
+          { "value": "3", "label": "25%"},
+          { "value": "4", "label": "34%"},
+		  { "value": "5", "label": "42%"},
+		  { "value": "6", "label": "50%"},
+		  { "value": "7", "label": "58%"},
+		  { "value": "8", "label": "66%"},
+		  { "value": "9", "label": "75%"},
+		  { "value": "10", "label": "84%"},
+		  { "value": "11", "label": "92%"},
+		  { "value": "12", "label": "100%"}
+          ],
+		  "default":   "12",
+          "label": "Width"
+        },
+		{
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Url"
+        },
+		{
+          "type": "textarea",
+          "id": "message",
+          "label": "Message"
+        } 
+      ]
+      },
+	  {
+      "type": "page",
+      "name": "Page item",
+      "settings": [
+		{
+          "type": "checkbox",
+          "id": "enable",
+          "label": "Enable",
+          "default": true
+        },
+		{
+          "type": "checkbox",
+          "id": "enable_mobile",
+          "label": "Enable on mobile",
+          "default": true
+        },
+		{
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+		{
+          "type": "select",
+          "id": "width",
+          "options": [
+		  { "value": "1", "label": "8%"},
+          { "value": "2", "label": "16%"},
+          { "value": "3", "label": "25%"},
+          { "value": "4", "label": "34%"},
+		  { "value": "5", "label": "42%"},
+		  { "value": "6", "label": "50%"},
+		  { "value": "7", "label": "58%"},
+		  { "value": "8", "label": "66%"},
+		  { "value": "9", "label": "75%"},
+		  { "value": "10", "label": "84%"},
+		  { "value": "11", "label": "92%"},
+		  { "value": "12", "label": "100%"}
+          ],
+		  "default":   "12",
+          "label": "Width"
+        },
+		{
+          "type": "page",
+          "id": "page",
+          "label": "Page"
+        }
+      ]
+      },	  
+	  {
+      "type": "product",
+      "name": "Product item",
+      "settings": [
+		{
+          "type": "checkbox",
+          "id": "enable",
+          "label": "Enable",
+          "default": true
+        },
+		{
+          "type": "checkbox",
+          "id": "enable_mobile",
+          "label": "Enable on mobile",
+          "default": true
+        },
+		{
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+		{
+          "type": "select",
+          "id": "width",
+          "options": [
+		  { "value": "1", "label": "8%"},
+          { "value": "2", "label": "16%"},
+          { "value": "3", "label": "25%"},
+          { "value": "4", "label": "34%"},
+		  { "value": "5", "label": "42%"},
+		  { "value": "6", "label": "50%"},
+		  { "value": "7", "label": "58%"},
+		  { "value": "8", "label": "66%"},
+		  { "value": "9", "label": "75%"},
+		  { "value": "10", "label": "84%"},
+		  { "value": "11", "label": "92%"},
+		  { "value": "12", "label": "100%"}
+          ],
+		  "default":   "12",
+          "label": "Width"
+        },
+		{
+           "type":      "product",
+           "id":        "product",
+           "label":     "Product"
+        }
+      ]
+      },
+	  {
+      "type": "empty",
+      "name": "Empty box",
+      "settings": [
+		{
+          "type": "checkbox",
+          "id": "enable",
+          "label": "Enable",
+          "default": true
+        },
+		{
+          "type": "text",
+          "id": "height",
+          "label": "Height",
+          "default": "30"
+        }
+      ]
+      },
+	  {
+      "type": "clear",
+      "name": "Clear row",
+      "settings": [	
+        {
+           "type":      "header", 
+           "content":   "Clear row",
+           "info":      "Make a new row"
+        }
+      ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

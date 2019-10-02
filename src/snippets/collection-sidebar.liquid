@@ -1,0 +1,35 @@
+{% include 'collection.shopby-category' %}
+
+{% if template contains 'collection' %}
+<div class="filter-block">
+  {% assign count = 'd-none' %}
+  {% if settings.filter_count %}
+  {% assign count = '' %} 
+  {% endif %}
+
+  {% include 'collection.shopby-color' %}
+  {% include 'collection.shopby-price' %}
+  {% include 'collection.shopby-size' %}
+  {% include 'collection.shopby-brand' %}
+
+</div> 
+{% endif %}
+
+{% if settings.sidebar_mini_listing %} 
+{% assign g_title = settings.sidebar_mini_listing_title %}
+{% assign g_limit = settings.sidebar_mini_listing_limit %}
+{% assign g_collection = settings.sidebar_mini_listing_collection %}
+{% include 'mini-products-listing' %}
+{% endif %}
+
+{% if settings.custom_banner %}
+<div class="block block-custom-banner">
+  <a href="{{settings.banner_link}}" title="">
+    {% if settings.siderbar_img != blank %}
+    {{ settings.siderbar_img | img_url: '270x' | img_tag: settings.siderbar_img.alt, '' }}
+    {% else %}
+    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+    {% endif %}
+  </a>
+</div>
+{% endif %}

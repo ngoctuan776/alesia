@@ -1,0 +1,560 @@
+{% if settings.slideshow_fullwidth %}
+{% assign sw = settings.slideshow_width %}
+{% else %}
+{% assign sw = 1170 %}
+{% endif %}
+{% assign sh = settings.slideshow_height %}
+
+{% assign enable = section.settings.enable %}
+{% if enable %}
+<ul>
+<li data-transition="{{ section.settings.slide_transition }}" data-slotamount="7" data-masterspeed="500" data-thumb="{{ section.settings.slide_image | img_url:'master' }}" data-saveperformance="off" data-title="0{{block.id}}">
+<img src="{{section.settings.slide_image | img_url:'master'}}" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" alt="" />
+{% for block in section.blocks %}
+  {% if block.type == 'text' %}
+   
+    {% capture tstyle %}
+    letter-spacing: {{block.settings.t_spacing}}px;
+    color: {{block.settings.t_color}};
+    font-size: {{block.settings.t_font_size}}px;
+    font-weight: {{block.settings.t_fontWeight}};          
+    {% endcapture %} 
+  
+    {% if block.settings.t_y1 == 50 %}
+    {% assign tp1 = "center" %}
+    {% else %}
+    {% assign tp1 = sh | times: block.settings.t_y1 | divided_by: 100  %}
+    {% endif %}
+
+    {% if block.settings.t_x1 == 50 %}
+    {% assign lp1 = "center" %}
+  {% else %}
+  {% assign lp1 = sw | times: block.settings.t_x1 | divided_by: 100  %}
+  {% endif %}
+
+  <div class="tp-caption {{block.settings.t_effect}}" data-x="{{lp1}}" data-y="{{tp1}}" data-endspeed="500" data-speed="500" data-start="{{ block.settings.t_ste }}" data-easing="Linear.easeNone" data-elementdelay="0.1" data-endelementdelay="0.1" style="{{tstyle}}">
+    {% if block.settings.t_url %}
+    <a href="{{ block.settings.t_url }}" style="color: {{block.settings.t_color}};" title="">
+      {% endif %}
+
+      {{ block.settings.title }}
+
+      {% if block.settings.t_url %}
+    </a>
+    {% endif %}
+  </div>
+  {% endif %}
+  
+  {% if block.type == 'image' %}   
+    {% capture tstyle %}         
+    {% endcapture %} 
+  
+    {% if block.settings.i_y1 == 50 %}
+    {% assign tp1 = "center" %}
+    {% else %}
+    {% assign tp1 = sh | times: block.settings.i_y1 | divided_by: 100  %}
+    {% endif %}
+
+    {% if block.settings.i_x1 == 50 %}
+    {% assign lp1 = "center" %}
+  {% else %}
+  {% assign lp1 = sw | times: block.settings.i_x1 | divided_by: 100  %}
+  {% endif %}
+
+  <div class="tp-caption tp-image {{block.settings.i_effect}}" data-x="{{lp1}}" data-y="{{tp1}}" data-endspeed="500" data-speed="500" data-start="{{ block.settings.i_ste }}" data-easing="Linear.easeNone" data-elementdelay="0.1" data-endelementdelay="0.1" style="{{tstyle}}">
+    {% if block.settings.t_url %}
+    <a href="{{ block.settings.i_url }}" style="color: {{block.settings.t_color}};" title="">
+      {% endif %}
+
+      {% capture image_size %}{{ block.settings.i_width }}x{% endcapture %}
+      <img src="{{ block.settings.i_img | img_url: image_size }}"          
+           srcset="{{ block.settings.i_img | img_url: image_size }} 1x, {{ block.settings.i_img | img_url: image_size, scale: 2 }} 2x"
+           alt="{{ block.settings.i_img.alt | default: shop.name }}">
+      {% if block.settings.i_url %}
+    </a>
+    {% endif %}
+  </div>
+  {% endif %}
+ 
+{% endfor %}
+</li>
+</ul>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Slideshow Item 5",
+    "settings": [
+		{
+        "type": "checkbox",
+        "id": "enable",
+        "label": "Enable"
+        },
+		{
+        "type": "select",
+        "id": "slide_transition",
+        "label": "Transition Effects",
+        "options": [
+        {
+        "value": "random",
+        "label": "Random"
+        },
+        {
+        "value": "slideup",
+        "label": "Slide To Top"
+        },
+        {
+        "value": "slidedown",
+        "label": "Slide To Bottom"
+        },
+        {
+        "value": "slideright",
+        "label": "Slide To Right"
+        },
+        {
+        "value": "slideleft",
+        "label": "Slide To Left"
+        },
+        {
+        "value": "slidehorizontal",
+        "label": "Slide Horizontal"
+        },
+        {
+        "value": "slidevertical",
+        "label": "Slide Vertical"
+        },
+        {
+        "value": "boxslide",
+        "label": "Slide Boxes"
+        },
+        {
+        "value": "slotslide-horizontal",
+        "label": "Slide Slots Horizontal"
+        },
+        {
+        "value": "slotslide-vertical",
+        "label": "Slide Slots Vertical"
+        },
+        {
+        "value": "boxfade",
+        "label": "Fade Boxes"
+        },
+        {
+        "value": "slotfade-horizontal",
+        "label": "Fade Slots Horizontal"
+        },
+        {
+        "value": "slotfade-vertical",
+        "label": "Fade Slots Vertical"
+        },
+        {
+        "value": "fadefromright",
+        "label": "Fade and Slide from Right"
+        },
+        {
+        "value": "fadefromleft",
+        "label": "Fade and Slide from Left"
+        },
+        {
+        "value": "fadefromtop",
+        "label": "Fade and Slide from Top"
+        },
+        {
+        "value": "fadefrombottom",
+        "label": "Fade and Slide from Bottom"
+        },
+        {
+        "value": "fadetoleftfadefromright",
+        "label": "Fade To Left and Fade From Right"
+        },
+        {
+        "value": "fadetorightfadefromleft",
+        "label": "Fade To Right and Fade From Left"
+        },
+        {
+        "value": "Fade To Top and Fade From Bottom",
+        "label": "fadetotopfadefrombottom"
+        },
+        {
+        "value": "fadetobottomfadefromtop",
+        "label": "Fade To Bottom and Fade From Top"
+        },
+        {
+        "value": "parallaxtoright",
+        "label": "Parallax to Right"
+        },
+        {
+        "value": "parallaxtoleft",
+        "label": "Parallax to Left"
+        },
+        {
+        "value": "parallaxtotop",
+        "label": "Parallax to Top"
+        },
+        {
+        "value": "parallaxtobottom",
+        "label": "Parallax to Bottom"
+        },
+        {
+        "value": "scaledownfromright",
+        "label": "Zoom Out and Fade From Right"
+        },
+        {
+        "value": "scaledownfromleft",
+        "label": "Zoom Out and Fade From Left"
+        },
+        {
+        "value": "scaledownfromtop",
+        "label": "Zoom Out and Fade From Top"
+        },
+        {
+        "value": "scaledownfrombottom",
+        "label": "Zoom Out and Fade From Bottom"
+        },
+        {
+        "value": "zoomout",
+        "label": "Zoom Out"
+        },
+        {
+        "value": "zoomin",
+        "label": "Zoom In"
+        },
+        {
+        "value": "slotzoom-horizontal",
+        "label": "Zoom Slots Horizontal"
+        },
+        {
+        "value": "slotzoom-vertical",
+        "label": "Zoom Slots Vertical"
+        },
+        {
+        "value": "fade",
+        "label": "Fade"
+        },
+        {
+        "value": "curtain-1",
+        "label": "Curtain from Left"
+        },
+        {
+        "value": "curtain-2",
+        "label": "Curtain from Right"
+        },
+        {
+        "value": "curtain-3",
+        "label": "Curtain from Middle"
+        },
+        {
+        "value": "3dcurtain-horizontal",
+        "label": "3D Curtain Horizontal"
+        },
+        {
+        "value": "3dcurtain-vertical",
+        "label": "3D Curtain Vertical"
+        },
+        {
+        "value": "cube",
+        "label": "Cube Vertical"
+        },
+        {
+        "value": "cube-horizontal",
+        "label": "Cube Horizontal"
+        },
+        {
+        "value": "incube",
+        "label": "In Cube Vertical"
+        },
+        {
+        "value": "incube-horizontal",
+        "label": "In Cube Horizontal"
+        },
+        {
+        "value": "turnoff",
+        "label": "TurnOff Horizontal"
+        },
+        {
+        "value": "turnoff-vertical",
+        "label": "TurnOff Vertical"
+        },
+        {
+        "value": "papercut",
+        "label": "Paper Cut"
+        },
+        {
+        "value": "flyin",
+        "label": "Fly In"
+        }		
+        ],
+        "default": "random"
+        },
+        {
+        "type": "image_picker",
+        "id": "slide_image",
+        "label": "Slide Image"
+        }
+	],
+	"blocks": [
+        {
+        "type": "text",
+        "name": "Text",
+        "settings": [
+		  {
+          "type": "text",
+          "id": "title",
+          "label": "Text",
+          "default": "TRF AUTUMN WINTER 14"
+          },
+		  {
+          "type": "url",
+          "id": "t_url",
+          "label": "URL"
+          },
+		  {
+          "type": "select",
+          "id": "t_effect",
+          "label": "Effect",
+          "options": [
+          {
+          "value": "sft",
+          "label": "Short from Top"
+          },
+          {
+          "value": "sfb",
+          "label": "Short from Bottom"
+          },
+          {
+          "value": "sfr",
+          "label": "Short from Right"
+          },
+          {
+          "value": "sfl",
+          "label": "Short from Left"
+          },
+          {
+          "value": "lft",
+          "label": "Long from Top"
+          },
+          {
+          "value": "lfb",
+          "label": "Long from Bottom"
+          },
+          {
+          "value": "lfr",
+          "label": "Long from Right"
+          },
+          {
+          "value": "lfl",
+          "label": "Long from Left"
+          },
+          {
+          "value": "skewfromright",
+          "label": "Skew from Right"
+          },
+          {
+          "value": "skewfromleft",
+          "label": "Skew from Left"
+          },
+          {
+          "value": "skewfromleftshort",
+          "label": "Skew from Left Short"
+          },
+          {
+          "value": "skewfromrightshort",
+          "label": "Skew from Right Short"
+          }
+          ],
+          "default": "sfb"
+          },
+		  {
+          "type": "text",
+          "id": "t_ste",
+          "label": "Delay Effect",
+          "default": "500"		  
+          },
+          {
+          "type":      "range",
+          "id":        "t_y1",
+          "min":       0,
+          "max":        99,
+          "step":       1,
+          "unit":       "%",
+          "label":     "Top Position",
+          "default":   45
+          },
+          {
+          "type":      "range",
+          "id":        "t_x1",
+          "min":       0,
+          "max":        99,
+          "step":       1,
+          "unit":       "%",
+          "label":     "Left Position",
+          "default":   45
+          },
+          {
+          "type":      "range",
+          "id":        "t_spacing",
+          "min":       0,
+          "max":        10,
+          "step":       1,
+          "unit":       "px",
+          "label":     "Letter Spacing",
+          "default":   1
+          }, 
+          {
+          "type": "color",
+          "id": "t_color",
+          "label": "Color",
+          "default": "#ffffff"
+          },			
+          {
+          "type":      "range",
+          "id":        "t_font_size",
+          "min":       0,
+          "max":        99,
+          "step":       1,
+          "unit":       "px",
+          "label":     "Font Size",
+          "default":   23
+          }, 
+          {
+          "type": "select",
+          "id": "t_fontWeight",
+          "label": "Font Weight",
+          "options": [
+          {
+          "value": "300",
+          "label": "300"
+          },
+          {
+          "value": "400",
+          "label": "400"
+          },
+          {
+          "value": "600",
+          "label": "600"
+          },
+          {
+          "value": "700",
+          "label": "700"
+          }
+
+          ],
+          "default": "400"
+          }
+
+        ]
+      },
+	  {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+		  {
+          "type": "image_picker",
+          "id": "i_img",
+          "label": "Select Image"
+          },	
+		  {
+          "type": "text",
+          "id": "i_width",
+          "label": "Image Width",
+          "default": "135"
+          },
+		  {
+          "type": "url",
+          "id": "i_url",
+          "label": "URL"
+          },
+		  {
+          "type": "select",
+          "id": "i_effect",
+          "label": "Effect",
+          "options": [
+          {
+          "value": "sft",
+          "label": "Short from Top"
+          },
+          {
+          "value": "sfb",
+          "label": "Short from Bottom"
+          },
+          {
+          "value": "sfr",
+          "label": "Short from Right"
+          },
+          {
+          "value": "sfl",
+          "label": "Short from Left"
+          },
+          {
+          "value": "lft",
+          "label": "Long from Top"
+          },
+          {
+          "value": "lfb",
+          "label": "Long from Bottom"
+          },
+          {
+          "value": "lfr",
+          "label": "Long from Right"
+          },
+          {
+          "value": "lfl",
+          "label": "Long from Left"
+          },
+          {
+          "value": "skewfromright",
+          "label": "Skew from Right"
+          },
+          {
+          "value": "skewfromleft",
+          "label": "Skew from Left"
+          },
+          {
+          "value": "skewfromleftshort",
+          "label": "Skew from Left Short"
+          },
+          {
+          "value": "skewfromrightshort",
+          "label": "Skew from Right Short"
+          }
+          ],
+          "default": "sfb"
+          },
+		  {
+          "type": "text",
+          "id": "i_ste",
+          "label": "Delay Effect",
+          "default": "500"		  
+          },
+          {
+          "type":      "range",
+          "id":        "i_y1",
+          "min":       0,
+          "max":        99,
+          "step":       1,
+          "unit":       "%",
+          "label":     "Top Position",
+          "default":   45
+          },
+          {
+          "type":      "range",
+          "id":        "i_x1",
+          "min":       0,
+          "max":        99,
+          "step":       1,
+          "unit":       "%",
+          "label":     "Left Position",
+          "default":   45
+          } 
+         
+        ]
+      }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

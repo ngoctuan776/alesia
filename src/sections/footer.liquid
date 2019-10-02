@@ -1,0 +1,126 @@
+
+{% include section.settings.footer_layout %}
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [	
+	{
+      "type": "select",
+      "id": "footer_layout",
+      "label": "Footer Layout",
+      "default": "footer_v1",
+      "options": [		
+        {
+          "value": "footer_v1",
+          "label": "Footer 1"
+        }
+      ]
+    },
+	{
+      "type": "color",
+      "id": "ft_bg",
+      "label": "Footer Background",
+      "default": "#252525"
+    },
+	{
+      "type": "header",
+      "content": "Footer Column 1"
+    },
+	{
+      "type": "text",
+      "id": "ft_title1",
+      "label": "Title Mobile",
+      "default": "Store Infomation"
+    },
+    {
+      "type": "checkbox",
+      "id": "logo_img",
+      "label": "Use logo image",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },	
+    {
+      "type": "text",
+      "id": "logo_max_width",
+      "label": "Custom logo width (in pixels)",
+      "default": "100"
+    },
+	{
+    "type": "text",
+    "id": "logo_text",
+    "label": "Logo text",
+    "default": "Venza"
+    },
+    {
+    "type": "text",
+    "id": "logo_text_size",
+    "label": "Logo text - font size",
+    "default": "40px"
+    },
+    {
+    "type": "text",
+    "id": "logo_text_size_sm",
+    "label": "Logo text - font size on Tablet",
+    "default": "32px"
+    },
+    {
+    "type": "text",
+    "id": "logo_text_size_xs",
+    "label": "Logo text - font size on Phone",
+    "default": "22px"
+    },
+	 {
+      "type": "text",
+      "id": "ft_address",
+      "label": "Address",
+      "default": "Green Stress, Monaco, UK"
+    },
+ 	
+	{
+      "type": "header",
+      "content": "Footer Column 2"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_linklist",
+      "label": "Select menu",
+      "default": "footer"
+    },
+	{
+      "type": "header",
+      "content": "Payment"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": false
+    },
+	{
+      "type": "image_picker",
+      "id": "footer_payment",
+      "label": "Footer payment icons (.png)"
+    },
+	{
+      "type": "header",
+      "content": "Copyright"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_powered_by",
+      "label": "Show Powered by",
+      "default": true
+    },
+	{
+      "type": "text",
+      "id": "footer_coppyright",
+      "label": "Copyright text",
+      "default": "© 2016  <a title='' href='#'>FORWARD<\/a> All rights reserved"
+    }
+  ]
+}
+{% endschema %}

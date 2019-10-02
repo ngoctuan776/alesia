@@ -1,0 +1,118 @@
+{% assign title-align = section.settings.product_tab_title_align %}
+{% assign content-align = section.settings.product_tab_content_align %}
+{% assign title-align2 = section.settings.product_tab_title_align2 %}
+{% assign limit = section.settings.custom_product_limit %}
+{% assign item = section.settings.prt_item %}
+{% assign citem = section.settings.prt_citem %}
+{% assign item980 = section.settings.prt_item_980 %}
+{% assign item768 = section.settings.prt_item_768 %}
+{% assign item480 = section.settings.prt_item_480 %}
+{% assign show_nav = section.settings.prt_nav %}
+{% assign show_dots = section.settings.prt_dot %}
+{% if collection == null or collection.handle == 'frontpage' or collection.handle == 'all' %}
+{% assign found_a_collection = false %}
+{% for c in product.collections %}
+{% if found_a_collection == false and c.handle != 'frontpage' and c.handle != 'all' and c.all_products_count > 1 %}
+{% assign found_a_collection = true %}
+{% assign collection = c %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% assign ctc = '' %}
+{% for tag in product.tags %}
+{% if tag contains '__ctc_' %}
+{% assign ctc = tag | remove: "__ctc_" %}
+{% endif %}
+{% endfor %}
+
+
+{% if related-products == 'box' %}
+{% assign container = "" %}
+{% else %}
+{% assign container = "container" %}
+{% endif %}
+
+<div class="collateral product-tabs e-tabs tab-wrap">
+  <div class="{{ container }}">
+
+    <div class="inner no-border text-{{title-align2}}">
+      <ul class="tabs tabs-title">  
+        {% if collection and collection.products_count > 1 %}
+        <li class="tab-link h4 {% unless ctc != blank %}one-item{% endunless %}" data-tab="tab-1">
+          {% if section.settings.related_product_title != "" %} {{section.settings.related_product_title}}{% else %}{{ 'products.general.related_products_title' | t }}{% endif %} 
+        </li>
+        {% endif %}
+
+        {% if ctc != blank %}
+        <li class="tab-link h4" data-tab="tab-2">{{section.settings.custom_product_title}}</li>
+        {% endif %}
+      </ul>
+      <p class="des">{{section.settings.custom_product_subtitle}}</p>
+    </div>
+    {% if ctc != '' %}
+    <div id="tab-2" class="tab-content wow fadeInUp text-{{content-align}}">
+      <div class="custom-swiper">
+        <div class="widget-content">
+          <div class="swiper-container" data-items="{{ item }}" data-margin="{{ section.settings.prt_gutter }}" data-row="{{ citem }}" data-md="{{ item980 }}" data-sm="{{ item768 }}" data-xs="{{ item480 }}">
+            <div class="swiper-wrapper">
+              {% for product in collections[ctc].products limit: section.settings.custom_product_limit %}
+              <div class="swiper-slide item">
+                {% include 'product-grid-item' %}
+              </div>
+              {% endfor %}
+
+              <div class="swiper-button-next rel2-next d-none"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
+              <div class="swiper-button-prev rel2-prev d-none"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>
+              <div class="swiper-pagination d-block d-lg-none"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if collection and collection.products_count > 1 %}
+    <div id="tab-1" class="tab-content text-{{content-align}}">
+      <div class="related-products"> 
+        <div class="widget-content">
+          <div class="swiper-container" data-items="{{ item }}" data-margin="{{ section.settings.prt_gutter }}" data-row="{{ citem }}" data-md="{{ item980 }}" data-sm="{{ item768 }}" data-xs="{{ item480 }}">
+            <div class="swiper-wrapper">
+              {% assign current_product = product %}
+              {% assign current_product_found = false %}
+              {% for product in collection.products limit: limit %}
+              {% if product.handle == current_product.handle %}
+              {% assign current_product_found = true %}
+              {% else %} 
+              {% unless current_product_found == false and forloop.last %}
+
+              <div class="swiper-slide item">
+                {% include 'product-grid-item' %}
+              </div>
+
+              {% endunless %}
+              {% endif %}
+              {% endfor %}
+            </div>
+			{% if show_nav %}
+            <div class="swiper-button-next rel-next d-none d-lg-block"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
+            <div class="swiper-button-prev rel-prev d-none d-lg-block"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>
+            {% endif %}
+            {% if show_dots %}
+            <div class="swiper-pagination d-block d-lg-none"></div>
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+<div class="space_box">
+  <div class="empty-box d-none d-xl-block" style="height: 30px;">&nbsp;</div>
+  <div class="empty-box d-none d-xl-none d-md-block" style="height: 15px;">&nbsp;</div>
+  <div class="empty-box d-md-none d-xl-none" style="height: 0px;">&nbsp;</div>
+</div>

@@ -1,0 +1,57 @@
+{% if settings.enable_shop_by_tags_4 %}
+<div class="block filter-custom filter-tag">
+  {% assign tags = settings.shop_by_tags_4_list_tags | split: ',' %} 
+  <div class="block-title">
+    <h3>{{ settings.shop_by_tags_4_title }}<a href="javascript:void(0)" class="clear" style="display:none" >{% include 'icon-close' %}</a></h3>
+  </div>
+  <div class="block-content">
+    <div class="scrollbar-outer">
+      <ul class="list-menu">
+        {% for t in tags %}
+
+        {% assign tag = t | strip %}
+        {% assign tag_value = tag | handleize %}     
+
+        {% if current_tags contains tag %}
+
+        {% assign products_count = 0 %}
+        {% for product in collections[collection.handle].products %}
+        {% assign ptag = product.tags | strip %}
+        {% if ptag contains tag %}
+        {% assign products_count = products_count | plus: 1 %}
+        {% endif %}      
+        {% endfor %}
+
+        <li class="active">
+
+          <input type="checkbox" value="{{ tag_value | split: '|' | first }}" checked/>
+          <a href="javascript:void(0)" title="{{tag}}">{{tag}}<span class="count {{ count }}">( {{ products_count }} )</span></a>
+        </li>
+        {% else %}
+        {% if collection.tags contains tag %} 
+
+        {% assign products_count = 0 %}
+        {% for product in collections[collection.handle].products %}
+        {% assign ptag = product.tags | strip  %}
+        {% assign tagX = tag | strip | append: '"'  %}
+
+        {% if ptag contains tagX %}
+
+        {% assign products_count = products_count | plus: 1 %}
+        {% endif %}      
+        {% endfor %}
+
+        <li>
+
+          <input type="checkbox" value="{{ tag_value | split: '|' | first }}"/>       
+          <a href="javascript:void(0)" title="{{tag}}">{{tag}}<span class="count {{ count }}">( {{ products_count }} )</span></a>
+        </li>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endif %}
+

@@ -1,0 +1,94 @@
+<div class="widget widget-banner-2 text-center {% if section.settings.s1 %}d-xl-block{% else %}d-xl-none{% endif %} {% if section.settings.s2 %}d-md-block{% else %}d-md-none{% endif %} {% if section.settings.s3 %}d-block{% else %}d-none{% endif %}">
+  <div class="{% if section.settings.fw %}fw{% else %}container{% endif %}">  
+    <div class="widget-inner gr-ef">
+
+      <div class="widget-content">
+        <div class="row">
+          {% for block in section.blocks %}          
+          {% if block.settings.enable %}
+          <div class="col-sm">
+            <div class="banner-item">
+              <a href="{{ section.settings.url }}" title="">
+                <span class="media-effect">
+                  {% if block.settings.item_image != blank %}
+                  <img class="img-responsive lazyload {{lazyload}}" data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-sizes="auto" src="{{ "icon-loadings.svg" | asset_url }}" data-src="{{ block.settings.item_image | img_url: 'master' }}" alt="{{ block.settings.item_image.alt | default: shop.name }}" />            
+                  {% else %}
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}                
+                </span>                
+              </a>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+"name": "GRT - Banner 2",
+"class": "section-layout-1",
+"settings": [
+{
+"type": "checkbox",
+"id": "fw",
+"label": "Full width"
+},
+{
+"type": "checkbox",
+"id": "s1",
+"label": "Show on Desktop",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "s2",
+"label": "Show on Tablet",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "s3",
+"label": "Show on Mobile",
+"default": true
+}
+],
+"blocks": [
+{
+"type": "text",
+"name": "Item",
+"settings": [
+{
+"type": "checkbox",
+"id": "enable",
+"label": "Enable item"
+},
+{
+"type": "url",
+"id": "url",
+"label": "URL"
+},
+{
+"type": "image_picker",
+"id": "item_image",
+"label": "Icon"
+}
+]
+}
+],
+"presets": [
+{
+"name": "GRT - Banner 2",
+"category": "Image"
+}
+]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
